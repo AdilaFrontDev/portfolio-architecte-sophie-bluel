@@ -42,6 +42,8 @@ const hotelsAndRestaurantsSort = document.querySelector(".hotelsAndRestaurants")
 
 // Ajout d'un listener pour la catégorie Tous
 tousSort.addEventListener("click", function () {
+    // Effacement de l'écran et regénération de la page avec les projets filtrées uniquement
+    sectionWorks.innerHTML= "";
     worksGenerator(works);
     console.log("tous");
 });
