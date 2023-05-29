@@ -33,3 +33,51 @@ function worksGenerator(works) {
     
 // premier affichage de la page
 worksGenerator(works);
+
+// Récupération des éléments du DOM pour les boutons catégories
+const tousSort = document.querySelector(".tous");
+const objetsSort = document.querySelector(".objets");
+const appartementsSort = document.querySelector(".appartements");
+const hotelsAndRestaurantsSort = document.querySelector(".hotelsAndRestaurants");
+
+// Ajout d'un listener pour la catégorie Tous
+tousSort.addEventListener("click", function () {
+    worksGenerator(works);
+    console.log("tous");
+});
+
+// Ajout d'un listener pour la catégorie Objets
+objetsSort.addEventListener("click", function() {
+    const objetsSorted = works.filter(function(work) {
+        const categorie = work.category;
+        return categorie.id == 1;
+    });
+    console.log(objetsSorted);
+    // Effacement de l'écran et regénération de la page avec les projets filtrées uniquement
+    sectionWorks.innerHTML= "";
+    worksGenerator(objetsSorted);
+});
+
+// Ajout d'un listener pour la catégorie Appartements
+appartementsSort.addEventListener("click", function() {
+    const appartementsSorted = works.filter(function(work) {
+        const categorie = work.category;
+        return categorie.id == 2;
+    });
+    console.log(appartementsSorted);
+     // Effacement de l'écran et regénération de la page avec les projets filtrées uniquement
+     sectionWorks.innerHTML= "";
+     worksGenerator(appartementsSorted);
+});
+
+// Ajout d'un listener pour la catégorie Hôtels & Restaurants
+hotelsAndRestaurantsSort.addEventListener("click", function() {
+    const hotelsAndRestaurantsSorted = works.filter(function(work) {
+        const categorie = work.category;
+        return categorie.id == 3;
+    });
+    console.log(hotelsAndRestaurantsSorted);
+     // Effacement de l'écran et regénération de la page avec les projets filtrées uniquement
+     sectionWorks.innerHTML= "";
+     worksGenerator(hotelsAndRestaurantsSorted);
+});

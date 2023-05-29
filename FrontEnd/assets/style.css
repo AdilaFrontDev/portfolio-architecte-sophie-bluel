@@ -52,6 +52,8 @@ body {
 	margin:auto;
 	font-family: 'Work Sans' ;
 	font-size: 14px;
+	background-color: #FFFEF8;
+
 }
 header {
 	display: flex;
@@ -137,6 +139,35 @@ li:hover {
 	width: 100%;
 
 }
+
+/* mise em page des catégories pour la section projets */
+
+.categories {
+	display: flex;
+	justify-content: center;
+	gap: 10px;
+	margin: 50px 10px;
+}
+
+.categories p {
+	display: block;
+	border: 1px solid #1D6154;
+	color: #1D6154;
+	border-radius: 60px;
+	padding: 9px 20px;
+	font-family: 'Syne';
+	font-style: normal;
+	font-weight: 700;
+	font-size: 16px;
+	line-height: 19px;
+	text-align: center;
+}
+
+.categories p:hover {
+	background-color: #1D6154;
+	color: #fff;
+}
+
 #contact {
 	width: 50%;
 margin: auto;
