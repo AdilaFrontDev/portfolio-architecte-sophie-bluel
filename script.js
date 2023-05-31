@@ -80,12 +80,12 @@ hotelsAndRestaurantsSort.addEventListener("click", function() {
 
 
 // en cas de connexion reussite 
-
-
 // vérification du token dans le local storage
 
 let storedToked = window.localStorage.getItem("token");
 console.log(storedToked);
+
+
 
 if (storedToked !== null) {
     // Recupétation du DOM de la bare de navigation 
@@ -100,9 +100,52 @@ if (storedToked !== null) {
         <li>projets</li>
         <li>contact</li>
         <li>
-        <a href="./login.html">logout</a>
+        <a id="log-out" href="./login.html">logout</a>
         </li>
         <li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
     </ul>`;
     navigation.innerHTML = navigationIn;
+
+    // Affichage de la modale
+    document.querySelector(".modale").style.display = "flex";
+    
+    // Décalage du reste des balises pour laisser la place au modale
+    //récupérations dans le DOM des balises à décaler
+    const header =document.querySelector("header");
+    const main = document.querySelector("main");
+    const footer = document.querySelector("footer");
+    
+    header.classList.add("shift");
+    main.classList.add("shift");
+    footer.classList.add("shift");
+    
+    // Ajout des boutons de modification pour l'introduction et pour la partie protfolio
+    // Récupération des éléments du DOM dans lesquels seront ajouté les boutons de modification
+    const introduction = document.querySelector(".introduction_figure");
+    const mesProjets = document.querySelector(".projets");
+
+    // Construction de la balise à ajouter
+    const pModifier1 = document.createElement("p");
+    const pModifier2 = document.createElement("p");
+    
+    pModifier1.innerHTML = `<i class="fa-regular fa-pen-to-square"></i> modifier`;
+    pModifier2.innerHTML = `<i class="fa-regular fa-pen-to-square"></i> modifier`;
+
+    introduction.appendChild(pModifier1);
+    mesProjets.appendChild(pModifier2);
+
+    // Suppression des catégories
+    const categories = document.querySelector(".categories");
+    categories.innerHTML="";
+
+    // en cas de déconnexion
+    
+    const logOut = document.querySelector("#log-out");
+    console.log(logOut);
+
+    logOut.addEventListener("click", function() {
+        window.localStorage.removeItem("token");
+    })
+
 }
+

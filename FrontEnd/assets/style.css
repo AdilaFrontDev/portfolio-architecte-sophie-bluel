@@ -53,6 +53,7 @@ body {
 	font-family: 'Work Sans' ;
 	font-size: 14px;
 	background-color: #FFFEF8;
+	
 }
 
 main {
@@ -131,6 +132,10 @@ li:hover {
 #introduction figure {
 	flex: 1
 }
+#introduction p {
+	margin: 15px 0 0 60px ;
+	
+}
 #introduction img {
 	display: block;
 	margin: auto;
@@ -142,11 +147,30 @@ li:hover {
 }
 #introduction h2 {
 	margin-bottom: 1em;
+	text-align: start;
+	margin-left: 60px;
 }
 
 #introduction p {
 	margin-bottom: 0.5em;
+	font-weight: 400;
+	font-size: 14px;
 }
+
+.projets {
+	position: relative;
+}
+
+.projets p {
+	margin-bottom: 25px;
+	font-weight: 400;
+	font-size: 14px;
+	position: absolute;
+	top: 45%;
+	left : 62%;
+}
+
+
 #portfolio h2 {
 	text-align: center;
 	margin-bottom: 1em;
@@ -274,3 +298,40 @@ footer nav ul {
 	margin: 2em;
 }
 
+/* partie de la modale */
+
+.modale {
+	display: none;
+	justify-content: center;
+	align-items: center;
+	height: 60px;
+	background-color: #000;
+	gap: 20px;
+	position: absolute;
+	right: 0;
+	left: 0;
+	top:0;
+}
+
+.modale .indicateur-mode {
+	color: #fff;
+	font-weight: 400;
+	font-size: 16px;
+}
+
+.modale .publier {
+	display: block;
+	background: #FFFFFF;
+	border-radius: 60px;
+	width: 216px;
+	height: 38px;
+	text-align: center;
+	line-height: 40px;
+	font-weight: 500;
+	font-size: 14px;
+}
+
+.shift {
+	position: relative;
+	top : 50px
+}
