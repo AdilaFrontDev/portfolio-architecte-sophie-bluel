@@ -248,6 +248,24 @@ input[type="submit"]{
 	color:#000;
 }
 
+.error-message {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: auto;
+	margin-top: 50px;
+}
+
+.error-message p {
+	width: 100%;
+	background-color: #fff;
+	border: solid 1px #B1663C;
+	padding: 10px;
+	line-height: 20px;
+	color: red;
+	font-weight: 600;
+}
+
 /* fin section contact et login*/
 
 footer nav ul {

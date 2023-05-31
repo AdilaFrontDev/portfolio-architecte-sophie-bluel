@@ -11,25 +11,19 @@ console.log(sectionWorks);
 sectionWorks.innerHTML= "";
 
 function worksGenerator(works) {
+    let figureHTML = "";
     for (let i =  0; i < works.length; i++) {
-        // Création d’une balise dédiée à un projet
-        const figureWork = document.createElement("figure");
-        console.log(figureWork);
-        // Création de l'élément image, attribution du src et de l'alt
-        const imageWork = document.createElement("img");
-        imageWork.src = works[i].imageUrl;
-        imageWork.alt = works[i].title;
-        // Création de la description de l'image
-        const captionWork = document.createElement("figcaption");
-        captionWork.innerText = works[i].title;
-        // Rattachement de la balise figure à la div .gallery
-        sectionWorks.appendChild(figureWork);
-        // Rattachement de l'image à la balise figure
-        figureWork.appendChild(imageWork);
-        // Rattachement de la description à la balise figure
-        figureWork.appendChild(captionWork);
+        // template litteral pour les projets de la gallerie
+        figureHTML += `
+        <figure>
+						<img src=${works[i].imageUrl}  alt=${works[i].title}>
+						<figcaption>${works[i].title}</figcaption>
+	    </figure>
+        `;
     };
+    sectionWorks.innerHTML = figureHTML;
 }
+
     
 // premier affichage de la page
 worksGenerator(works);
@@ -83,3 +77,32 @@ hotelsAndRestaurantsSort.addEventListener("click", function() {
      sectionWorks.innerHTML= "";
      worksGenerator(hotelsAndRestaurantsSorted);
 });
+
+
+// en cas de connexion reussite 
+
+
+// vérification du token dans le local storage
+
+let storedToked = window.localStorage.getItem("token");
+console.log(storedToked);
+
+if (storedToked !== null) {
+    // Recupétation du DOM de la bare de navigation 
+    const navigation = document.querySelector("#nav");
+    //suppression du menu hors connexion
+    navigation.innerHTML = "";
+    // Création du menu une fois connecté
+    let navigationIn = "";
+    // template litteral pour le menu durant la connexion
+    navigationIn = 
+    `<ul>
+        <li>projets</li>
+        <li>contact</li>
+        <li>
+        <a href="./login.html">logout</a>
+        </li>
+        <li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
+    </ul>`;
+    navigation.innerHTML = navigationIn;
+}
