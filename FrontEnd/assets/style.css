@@ -53,7 +53,7 @@ body {
 	font-family: 'Work Sans' ;
 	font-size: 14px;
 	background-color: #FFFEF8;
-	
+	z-index: 0;
 }
 
 main {
@@ -119,7 +119,11 @@ nav li {
 	font-weight: 600;
 }
 
-li:hover {
+.nav_link {
+	color: #000;
+}
+
+.nav_link:hover {
 	color: #B1663C;
 }
 
@@ -187,6 +191,8 @@ li:hover {
 	width: 100%;
 
 }
+
+
 
 /* mise em page des catégories pour la section projets */
 
@@ -311,6 +317,7 @@ footer nav ul {
 	right: 0;
 	left: 0;
 	top:0;
+	z-index: 2;
 }
 
 .modale .indicateur-mode {
@@ -333,5 +340,242 @@ footer nav ul {
 
 .shift {
 	position: relative;
-	top : 50px
+	top : 100px;
+}
+
+/* fenetres de la modale*/
+
+
+.darker-background {
+	display: block;
+	position: absolute;
+	top: 0;
+	bottom: -200vh;
+	left: 0;
+	right: 0;
+	background: rgba(0, 0, 0, 0.3);
+	z-index: 1;
+}
+
+.modale_fenetre {
+	display: block;
+	position: relative;
+	top: 150px;
+	width: 630px;	
+	margin: auto;
+	z-index: 3;
+}
+
+.modale_galerie, .modale_image {
+	position: absolute;
+	background: #FFFFFF;
+	border-radius: 10px;
+	margin:0;
+	z-index: 1;
+	top: 470px;
+	width: 100%;
+}
+
+.separation {
+	width: 420px;
+	height: 0px;
+	border: 1px solid #B3B3B3;
+	margin: 47px 9px 35px 9px ;
+}
+
+.modale_galerie, .modale_image {
+	display: none;
+	flex-direction: column;
+	align-items: center;
+	height: 730px;
+}
+
+
+.modale_galerie_fermeture, .modale_image_navigation  {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	font-size: 22px;
+	width: 100%;
+	height: 50px;
+}
+
+.modale_image_navigation {
+	justify-content: space-between;
+}
+
+.modale_image_navigation i {
+	height: 40px;
+	width: 60px;
+	text-align: center;
+	line-height: 60px;
+}
+
+.modale_galerie_fermeture i {
+	height: 40px;
+	width: 60px;
+	padding-top: 60px;
+}
+
+
+.modale_galerie p, .modale_image p {
+	margin: 20px 0 45px 0;
+	font-weight: 400;
+	font-size: 26px;
+}
+
+.modale_galerie_images {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+	width: 415px;
+	height: fit-content;
+}
+
+.miniature {
+	width: 78px;
+	position: relative;
+	margin: 5px 0 5px 0;
+}
+
+.miniature p {
+	font-weight: 400;
+	font-size: 12px;	
+	margin: 0;
+}
+
+.miniature i {
+	display: block;
+	background-color: #000;
+	color: #fff;
+	height: 17px;
+	width: 17px;
+	font-size: 10px;
+	position: absolute;
+	right: 7px;
+	top: 7px;
+	text-align: center;
+	line-height: 17px;
+	border-radius: 2px;
+}
+
+#resize-icon{
+	right: 27px;
+}
+
+.miniature img{
+	width: 100%;
+}
+
+
+
+.ajout-photo {
+	font-family: 'Syne';
+	font-weight: 700;
+	font-size: 14px;
+	color: white;
+	background-color: #1D6154;
+	
+	width: 273px;
+	height: 36px;
+	text-align: center;
+	line-height: 36px;
+	border-radius: 60px ;
+}
+
+#modale_galerie_supprimer {
+	color: #D65353;
+	font-family: 'Syne';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 14px;
+	margin-top: 23px;
+}
+ 
+.modale_image {
+	display: flex;
+	flex-direction: column;
+	height: 670px;
+}
+
+.modale_image p {
+	margin: 0;
+}
+
+#ajout-image {
+	background-color: #E8F1F6;
+	border-radius: 3px;
+	width: 420px;
+	height: 169px;
+	margin: 10px;
+}
+
+#ajout-image .telechargement {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;	
+	background-color: red;
+	height: 100%;
+	margin: auto;
+	width: 130px;
+}
+
+#ajout-image p {
+	font-weight: 400;
+	font-size: 10px;
+	margin: 0;
+}
+
+#ajout-image i {
+	color: #B9C5CC;
+	width: 58px;
+	height: 46px;
+	font-size: 58px;
+}
+
+
+#ajout-image label {
+	width: 173px;
+	height: 36px;
+	background: #CBD6DC;
+	color: #306685;
+	border-radius: 50px;
+	text-align: center;
+	line-height:36px;
+	margin: 20px 0 7px 0;
+}
+
+.modale_image form, #login form {
+	text-align: left;
+	margin-top:30px;
+	display: flex;
+	flex-direction: column;
+}
+
+.modale_image input {
+	height: 50px;
+	font-size: 1.2em;
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+} 
+
+.modale_image input[type="submit"] {
+	font-family: 'Syne';
+	font-weight: 700;
+	font-size: 14px;
+	color: white;
+	background-color: #A7A7A7;
+	width: 273px;
+	height: 36px;
+	text-align: center;
+	border-radius: 60px;
+	border: none;
+	margin: 0 83px;
+}
+
+.modale_image form label {
+	color: #3D3D3D;
+	margin: 20px 0 10px 0;
+
 }
