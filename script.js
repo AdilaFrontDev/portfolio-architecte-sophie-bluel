@@ -79,6 +79,76 @@ hotelsAndRestaurantsSort.addEventListener("click", function() {
 });
 
 
+// fonctions à executer en cas de connexion réussite
+
+function modeConnecte() {
+        // Recupétation du DOM de la bare de navigation 
+        const navigation = document.querySelector("#nav");
+        //suppression du menu hors connexion
+        navigation.innerHTML = "";
+        // Création du menu une fois connecté
+        let navigationIn = "";
+        // template litteral pour le menu durant la connexion
+        navigationIn = 
+        `<ul>
+            <li>projets</li>
+            <li>contact</li>
+            <li>
+            <a id="log-out" href="./login.html">logout</a>
+            </li>
+            <li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
+        </ul>`;
+        navigation.innerHTML = navigationIn;
+    
+        // Affichage de la modale
+        document.querySelector(".modale").style.display = "flex";
+        
+        // Décalage du reste des balises pour laisser la place au modale
+        //récupérations dans le DOM des balises à décaler
+        const header =document.querySelector("header");
+        
+        header.classList.add("shift");
+        
+        // Ajout des boutons de modification pour l'introduction et pour la partie protfolio
+        // Récupération des éléments du DOM dans lesquels seront ajouté les boutons de modification
+        const introduction = document.querySelector(".introduction_figure");
+        const mesProjets = document.querySelector(".projets");
+    
+        // Construction de la balise à ajouter
+        
+        const pModifier1 = document.createElement("p");
+        const pModifier2 = document.createElement("p");
+        pModifier1.classList.add("modifier");
+        pModifier2.classList.add("modifier");
+    
+        pModifier1.innerHTML = `<i class="fa-regular fa-pen-to-square"></i> modifier`;
+        pModifier2.innerHTML = `<i class="fa-regular fa-pen-to-square"></i> modifier`;
+    
+        introduction.appendChild(pModifier1);
+        mesProjets.appendChild(pModifier2); 
+        
+        // Suppression des catégories
+        document.querySelector(".categories").style.display = "none";
+
+}
+
+// fonction à executer en cas déconnexion
+
+function modeNonConnecte () {
+    // Récupération dans le DOM de l'élément logout
+    const logOut = document.querySelector("#log-out");
+    console.log(logOut);
+    // ajout du listener pour le logout avec action à effectuer
+    logOut.addEventListener("click", function() {
+        window.localStorage.removeItem("token");
+        console.log('coucou')
+        // redirection vers la home page (ne semble pas fonctionner pour l'instant)
+        location.href = "http://127.0.0.1:5500/FrontEnd/index.html";
+        // Rétablissement des catégories de filtre
+        document.querySelector(".categories").style.display = "flex";
+    })
+}
+
 // en cas de connexion reussite 
 // vérification du token dans le local storage
 
@@ -88,64 +158,30 @@ console.log(storedToked);
 
 
 if (storedToked !== null) {
-    // Recupétation du DOM de la bare de navigation 
-    const navigation = document.querySelector("#nav");
-    //suppression du menu hors connexion
-    navigation.innerHTML = "";
-    // Création du menu une fois connecté
-    let navigationIn = "";
-    // template litteral pour le menu durant la connexion
-    navigationIn = 
-    `<ul>
-        <li>projets</li>
-        <li>contact</li>
-        <li>
-        <a id="log-out" href="./login.html">logout</a>
-        </li>
-        <li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
-    </ul>`;
-    navigation.innerHTML = navigationIn;
 
-    // Affichage de la modale
-    document.querySelector(".modale").style.display = "flex";
-    
-    // Décalage du reste des balises pour laisser la place au modale
-    //récupérations dans le DOM des balises à décaler
-    const header =document.querySelector("header");
-    const main = document.querySelector("main");
-    const footer = document.querySelector("footer");
-    
-    header.classList.add("shift");
-    main.classList.add("shift");
-    footer.classList.add("shift");
-    
-    // Ajout des boutons de modification pour l'introduction et pour la partie protfolio
-    // Récupération des éléments du DOM dans lesquels seront ajouté les boutons de modification
-    const introduction = document.querySelector(".introduction_figure");
-    const mesProjets = document.querySelector(".projets");
-
-    // Construction de la balise à ajouter
-    const pModifier1 = document.createElement("p");
-    const pModifier2 = document.createElement("p");
-    
-    pModifier1.innerHTML = `<i class="fa-regular fa-pen-to-square"></i> modifier`;
-    pModifier2.innerHTML = `<i class="fa-regular fa-pen-to-square"></i> modifier`;
-
-    introduction.appendChild(pModifier1);
-    mesProjets.appendChild(pModifier2);
-
-    // Suppression des catégories
-    const categories = document.querySelector(".categories");
-    categories.innerHTML="";
+    // en cas de connexion on génère l'ensemble des éléments de l'espace reservé aux connectés
+    modeConnecte();
 
     // en cas de déconnexion
-    
-    const logOut = document.querySelector("#log-out");
-    console.log(logOut);
+    modeNonConnecte ();
 
-    logOut.addEventListener("click", function() {
-        window.localStorage.removeItem("token");
-    })
+    // si le delai de connection est dépassé on supprime le token et on revien sur la page d'accueil standard
+
+    // quand on clique sur le bouton modifier de la partie portfolio
+    // la premiere fenêtre modale doit s'ouvrir et de darke-background activé
+        // si on clique a l'exterieur de la fenêtre modale ou sur la croix elle doit se ferner et le darken backgroud desactivé
+        // si on clique sur supprimer une image cela doit être possible
+        // si on clique sur ajouter image on doit desactiver la première fenetre modale et activier la deuxieme
+
+    // une fois sur la seconde fenetre modale 
+        // si on clique a l'exterieur de la fenêtre modale ou sur la croix elle doit se ferner et le darken backgroud desactivé
+        // si on clique sur la fleche retour on revient vers la première fenetre modale
+        // si on sélectionne une image pour le formulaire on a un apercu de l'image qui s'affiche au niveau de la fiv apercu et la div ajout-image est désactivé
+        // si le formulaire est correctement remplit on ajoute la photo dans le backend et on l'affiche dans le flont end à la suite des autres et la fenetre modale se ferme
+        // si le formulaire n'est pas correctement rempli o reçoit un message d'erreur
+
+    // si on clique sur publier les changements les mofification sont enregistés et on se déconnect
+    
 
 }
 

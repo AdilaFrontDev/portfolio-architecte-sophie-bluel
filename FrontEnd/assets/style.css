@@ -52,19 +52,22 @@ body {
 	margin: auto;
 	font-family: 'Work Sans' ;
 	font-size: 14px;
-	background-color: #FFFEF8;
 	z-index: 0;
+	background-color: #FFFEF8;
 }
 
+
 main {
-	min-height: 700px;
+	min-height: 700px;	
 }
 
 header {
 	display: flex;
 	justify-content: space-between;
-	margin: 50px 0;
+	padding: 50px 0;
+	width: 100%;
 }
+
 
 header a {
 	text-decoration: none;
@@ -132,18 +135,18 @@ nav li {
 #introduction {
 	display: flex;
 	align-items: center;
+	max-width: 950px;
+	margin: auto;
+	margin-top: 100px;
 }
 #introduction figure {
 	flex: 1
 }
-#introduction p {
-	margin: 15px 0 0 60px ;
-	
-}
+
 #introduction img {
 	display: block;
 	margin: auto;
-	width: 80%;
+	width: 100%;
 }
 
 #introduction article {
@@ -159,6 +162,7 @@ nav li {
 	margin-bottom: 0.5em;
 	font-weight: 400;
 	font-size: 14px;
+	margin: 15px 0 0 60px ;
 }
 
 .projets {
@@ -170,28 +174,36 @@ nav li {
 	font-weight: 400;
 	font-size: 14px;
 	position: absolute;
-	top: 45%;
+	top: 15%;
 	left : 62%;
 }
 
+#portfolio {
+	margin-top: 100px;
+}
 
 #portfolio h2 {
 	text-align: center;
-	margin-bottom: 1em;
+	padding: 0 0 50px 0;
 }
 .gallery {
 	width: 100%;
+	max-width: 950px;
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr;
 	grid-column-gap: 20px;
-	grid-row-gap: 20px;
+	grid-row-gap: 10px;
+	margin: auto;
+	margin-top: 50px;
 }
 
 .gallery img {
 	width: 100%;
-
 }
 
+.gallery figcaption {
+	padding: 5px 0;
+}
 
 
 /* mise em page des catégories pour la section projets */
@@ -200,7 +212,7 @@ nav li {
 	display: flex;
 	justify-content: center;
 	gap: 10px;
-	margin: 50px 10px;
+	margin: 0;
 }
 
 .categories p {
@@ -230,7 +242,8 @@ nav li {
 
 #contact, #login {
 	width: 50%;
-	margin: auto;
+	margin: auto;	
+	width: 379px;
 }
 #contact > *, #login > * {
 	text-align: center;
@@ -298,13 +311,29 @@ input[type="submit"]{
 
 /* fin section contact et login*/
 
+footer {
+	background-color: #fff;
+	position: absolute;
+	left: 0;
+	right: 0;
+
+}
 footer nav ul {
 	display: flex;
 	justify-content: flex-end;
-	margin: 2em;
+	height: 60px;
+}
+
+footer nav li {
+	margin: 0 107px;
+	
 }
 
 /* partie de la modale */
+
+#introduction .modifier {
+ margin: 15px 0;
+}
 
 .modale {
 	display: none;
@@ -340,17 +369,18 @@ footer nav ul {
 
 .shift {
 	position: relative;
-	top : 100px;
+	top : 50px;
 }
 
 /* fenetres de la modale*/
 
 
 .darker-background {
-	display: block;
+	display: none;
+	width: 100%;
 	position: absolute;
 	top: 0;
-	bottom: -200vh;
+	bottom: -100px;
 	left: 0;
 	right: 0;
 	background: rgba(0, 0, 0, 0.3);
@@ -358,7 +388,7 @@ footer nav ul {
 }
 
 .modale_fenetre {
-	display: block;
+	display: none;
 	position: relative;
 	top: 150px;
 	width: 630px;	
@@ -510,12 +540,18 @@ footer nav ul {
 	margin: 10px;
 }
 
-#ajout-image .telechargement {
-	display: flex;
+ .import-image {
+	display: none;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;	
-	background-color: red;
+	height: 100%;
+	
+}
+
+.apercu {
+	display: block;
+	background-color: #000;
 	height: 100%;
 	margin: auto;
 	width: 130px;
@@ -555,9 +591,11 @@ footer nav ul {
 
 .modale_image input {
 	height: 50px;
+	width: 420px;
 	font-size: 1.2em;
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+	margin: auto;
 } 
 
 .modale_image input[type="submit"] {
@@ -566,12 +604,12 @@ footer nav ul {
 	font-size: 14px;
 	color: white;
 	background-color: #A7A7A7;
-	width: 273px;
+	width: 237px;
 	height: 36px;
 	text-align: center;
 	border-radius: 60px;
 	border: none;
-	margin: 0 83px;
+	margin: 0 101.5px;
 }
 
 .modale_image form label {
