@@ -372,23 +372,22 @@ footer nav li {
 	top : 50px;
 }
 
-/* fenetres de la modale*/
+/* fenetres de la modale et background associé*/
 
 
 .darker-background {
 	display: none;
-	width: 100%;
-	position: absolute;
+	position: fixed;
 	top: 0;
-	bottom: -100px;
 	left: 0;
 	right: 0;
+	bottom: 0;
 	background: rgba(0, 0, 0, 0.3);
 	z-index: 1;
 }
 
 .modale_fenetre {
-	display: none;
+	display: flex;
 	position: relative;
 	top: 150px;
 	width: 630px;	
@@ -401,25 +400,12 @@ footer nav li {
 	background: #FFFFFF;
 	border-radius: 10px;
 	margin:0;
-	z-index: 1;
+	z-index: 2;
 	top: 470px;
 	width: 100%;
-}
-
-.separation {
-	width: 420px;
-	height: 0px;
-	border: 1px solid #B3B3B3;
-	margin: 47px 9px 35px 9px ;
-}
-
-.modale_galerie, .modale_image {
-	display: none;
 	flex-direction: column;
 	align-items: center;
-	height: 730px;
 }
-
 
 .modale_galerie_fermeture, .modale_image_navigation  {
 	display: flex;
@@ -430,28 +416,29 @@ footer nav li {
 	height: 50px;
 }
 
-.modale_image_navigation {
-	justify-content: space-between;
+.modale_galerie p {
+	margin: 20px 0 45px 0;
+	font-weight: 400;
+	font-size: 26px;
 }
 
-.modale_image_navigation i {
-	height: 40px;
-	width: 60px;
-	text-align: center;
-	line-height: 60px;
+.separation {
+	width: 420px;
+	height: 0px;
+	border: 1px solid #B3B3B3;
+	margin: 47px 9px 35px 9px ;
 }
 
+/* code spécifique à la fenêtre modale galerie*/
+
+.modale_galerie {
+	display: none;
+	height: 730px;
+}
 .modale_galerie_fermeture i {
 	height: 40px;
 	width: 60px;
 	padding-top: 60px;
-}
-
-
-.modale_galerie p, .modale_image p {
-	margin: 20px 0 45px 0;
-	font-weight: 400;
-	font-size: 26px;
 }
 
 .modale_galerie_images {
@@ -489,28 +476,17 @@ footer nav li {
 	border-radius: 2px;
 }
 
-#resize-icon{
-	right: 27px;
-}
-
 .miniature img{
 	width: 100%;
 }
 
+#resize-icon {
+	display: none;
+	right: 27px;
+}
 
-
-.ajout-photo {
-	font-family: 'Syne';
-	font-weight: 700;
-	font-size: 14px;
-	color: white;
-	background-color: #1D6154;
-	
-	width: 273px;
-	height: 36px;
-	text-align: center;
-	line-height: 36px;
-	border-radius: 60px ;
+.miniature:hover > #resize-icon {
+	display: block;
 }
 
 #modale_galerie_supprimer {
@@ -521,15 +497,41 @@ footer nav li {
 	font-size: 14px;
 	margin-top: 23px;
 }
- 
+
+.ajout-photo {
+	font-family: 'Syne';
+	font-weight: 700;
+	font-size: 14px;
+	color: white;
+	background-color: #1D6154;
+	width: 273px;
+	height: 36px;
+	text-align: center;
+	line-height: 36px;
+	border-radius: 60px ;
+}
+/* code spécifique à la fevetre modale ajout image*/
+
 .modale_image {
-	display: flex;
+	display: none;
 	flex-direction: column;
 	height: 670px;
 }
+.modale_image_navigation {
+	justify-content: space-between;
+}
+
+.modale_image_navigation i {
+	height: 40px;
+	width: 60px;
+	text-align: center;
+	line-height: 60px;
+}
 
 .modale_image p {
-	margin: 0;
+	margin: 20px 0 20px 0;
+	font-weight: 400;
+	font-size: 26px;
 }
 
 #ajout-image {
@@ -538,23 +540,6 @@ footer nav li {
 	width: 420px;
 	height: 169px;
 	margin: 10px;
-}
-
- .import-image {
-	display: none;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;	
-	height: 100%;
-	
-}
-
-.apercu {
-	display: block;
-	background-color: #000;
-	height: 100%;
-	margin: auto;
-	width: 130px;
 }
 
 #ajout-image p {
@@ -570,7 +555,6 @@ footer nav li {
 	font-size: 58px;
 }
 
-
 #ajout-image label {
 	width: 173px;
 	height: 36px;
@@ -582,14 +566,29 @@ footer nav li {
 	margin: 20px 0 7px 0;
 }
 
+.import-image {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;	
+	height: 100%;
+}
+
+.apercu {
+	display: none;
+	background-color: #000;
+	height: 100%;
+	margin: auto;
+	width: 130px;
+}
+
 .modale_image form, #login form {
 	text-align: left;
-	margin-top:30px;
 	display: flex;
 	flex-direction: column;
 }
 
-.modale_image input {
+.modale_image input, select {
 	height: 50px;
 	width: 420px;
 	font-size: 1.2em;
@@ -598,6 +597,11 @@ footer nav li {
 	margin: auto;
 } 
 
+.modale_image form label {
+	color: #3D3D3D;
+	margin: 20px 0 10px 8px;
+
+}
 .modale_image input[type="submit"] {
 	font-family: 'Syne';
 	font-weight: 700;
@@ -610,10 +614,4 @@ footer nav li {
 	border-radius: 60px;
 	border: none;
 	margin: 0 101.5px;
-}
-
-.modale_image form label {
-	color: #3D3D3D;
-	margin: 20px 0 10px 0;
-
 }

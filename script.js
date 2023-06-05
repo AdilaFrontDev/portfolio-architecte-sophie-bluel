@@ -8,9 +8,11 @@ const sectionWorks = document.querySelector(".gallery");
 console.log(sectionWorks);
 
 //suppression du contenu de la div de classe Gallery avant integration dynamique du contenu
-sectionWorks.innerHTML= "";
+    sectionWorks.innerHTML= "";
 
 function worksGenerator(works) {
+    
+    // initialisation de la variavle;
     let figureHTML = "";
     for (let i =  0; i < works.length; i++) {
         // template litteral pour les projets de la gallerie
@@ -22,6 +24,29 @@ function worksGenerator(works) {
         `;
     };
     sectionWorks.innerHTML = figureHTML;
+}
+
+// récupération dans le DOM de la balise modale_galerie_images
+const galleireModaleImage = document.querySelector(".modale_galerie_images");
+console.log(galleireModaleImage);
+
+//suppression du contenu de la div de classe Gallery avant integration dynamique du contenu
+    galleireModaleImage.innerHTML= "";
+
+function modaleGalleryGenerator(works) {
+    // initialisation de la variavle;
+    let gallerieModale = "";
+    for(let i =  0; i < works.length; i++) {
+        gallerieModale += `
+        <figure class="miniature">
+            <img src=${works[i].imageUrl}  alt=${works[i].title}>
+            <i class="fa-solid fa-trash-can"></i>
+            <i id="resize-icon" class="fa-solid fa-arrows-up-down-left-right"></i>
+            <p>éditer</p>				
+        </figure>
+        `;
+    }
+    galleireModaleImage.innerHTML= gallerieModale;
 }
 
     
@@ -110,25 +135,25 @@ function modeConnecte() {
         header.classList.add("shift");
         
         // Ajout des boutons de modification pour l'introduction et pour la partie protfolio
-        // Récupération des éléments du DOM dans lesquels seront ajouté les boutons de modification
-        const introduction = document.querySelector(".introduction_figure");
-        const mesProjets = document.querySelector(".projets");
-    
-        // Construction de la balise à ajouter
+            // Récupération des éléments du DOM dans lesquels seront ajouté les boutons de modification
+            const introduction = document.querySelector(".introduction_figure");
+            const mesProjets = document.querySelector(".projets");
         
-        const pModifier1 = document.createElement("p");
-        const pModifier2 = document.createElement("p");
-        pModifier1.classList.add("modifier");
-        pModifier2.classList.add("modifier");
-    
-        pModifier1.innerHTML = `<i class="fa-regular fa-pen-to-square"></i> modifier`;
-        pModifier2.innerHTML = `<i class="fa-regular fa-pen-to-square"></i> modifier`;
-    
-        introduction.appendChild(pModifier1);
-        mesProjets.appendChild(pModifier2); 
+            // Construction des balises à ajouter
+            
+            const pModifier1 = document.createElement("p");
+            const pModifier2 = document.createElement("p");
+            pModifier1.classList.add("modifier");
+            pModifier2.classList.add("modifier-gallerie");
         
-        // Suppression des catégories
-        document.querySelector(".categories").style.display = "none";
+            pModifier1.innerHTML = `<i class="fa-regular fa-pen-to-square"></i> modifier`;
+            pModifier2.innerHTML = `<i class="fa-regular fa-pen-to-square"></i> modifier`;
+        
+            introduction.appendChild(pModifier1);
+            mesProjets.appendChild(pModifier2); 
+            
+            // Mise en silence des catégories
+            document.querySelector(".categories").style.display = "none";
 
 }
 
@@ -137,7 +162,6 @@ function modeConnecte() {
 function modeNonConnecte () {
     // Récupération dans le DOM de l'élément logout
     const logOut = document.querySelector("#log-out");
-    console.log(logOut);
     // ajout du listener pour le logout avec action à effectuer
     logOut.addEventListener("click", function() {
         window.localStorage.removeItem("token");
@@ -149,14 +173,18 @@ function modeNonConnecte () {
     })
 }
 
-// en cas de connexion reussite 
+function fermetureModale() {
+    document.querySelector(".modale_galerie").style.display = "none";
+    document.querySelector(".darker-background").style.display = "none";
+    document.querySelector(".modale_image").style.display = "none";
+}
+
 // vérification du token dans le local storage
 
 let storedToked = window.localStorage.getItem("token");
 console.log(storedToked);
 
-
-
+// en cas de connexion reussite 
 if (storedToked !== null) {
 
     // en cas de connexion on génère l'ensemble des éléments de l'espace reservé aux connectés
@@ -167,21 +195,78 @@ if (storedToked !== null) {
 
     // si le delai de connection est dépassé on supprime le token et on revien sur la page d'accueil standard
 
-    // quand on clique sur le bouton modifier de la partie portfolio
-    // la premiere fenêtre modale doit s'ouvrir et de darke-background activé
-        // si on clique a l'exterieur de la fenêtre modale ou sur la croix elle doit se ferner et le darken backgroud desactivé
-        // si on clique sur supprimer une image cela doit être possible
-        // si on clique sur ajouter image on doit desactiver la première fenetre modale et activier la deuxieme
+    // si on clique sur le bouton modifier de la partie portfolio
+        // récupéraion dans le DOM du bouton modifier-gallerie
+        const modifierGallerie = document.querySelector(".modifier-gallerie");
+        // ajout d'un listener au bouton modifier-gallerie
+        modifierGallerie.addEventListener("click", function() {
+            // récupéation dans le DOM de la fenêtre modale galerie
+            document.querySelector(".modale_galerie").style.display = "flex";
+            document.querySelector(".darker-background").style.display = "block";
+        })
+        //on récupère dynamiquement les images de la gallerie
+        modaleGalleryGenerator(works);
 
-    // une fois sur la seconde fenetre modale 
-        // si on clique a l'exterieur de la fenêtre modale ou sur la croix elle doit se ferner et le darken backgroud desactivé
-        // si on clique sur la fleche retour on revient vers la première fenetre modale
-        // si on sélectionne une image pour le formulaire on a un apercu de l'image qui s'affiche au niveau de la fiv apercu et la div ajout-image est désactivé
-        // si le formulaire est correctement remplit on ajoute la photo dans le backend et on l'affiche dans le flont end à la suite des autres et la fenetre modale se ferme
-        // si le formulaire n'est pas correctement rempli o reçoit un message d'erreur
+    // si on clique a l'exterieur de la fenêtre modale ou sur la croix elle doit se ferner et le darken backgroud desactivé
+        // récupération dans le DOM du bouton de fermeture de la fenetre modale
+        const femetureModale = document.querySelector(".fa-xmark");
+        // ajout d'un listener au bouton de fermeture de la fenetre modale
+        femetureModale.addEventListener("click", function() {
+            fermetureModale();
+        })
 
-    // si on clique sur publier les changements les mofification sont enregistés et on se déconnect
+        // idem si on clique à l'exterieur de la fenetre modale
+        const darkenBackground = document.querySelector(".darker-background");
+        darkenBackground.addEventListener("click", function() {
+            fermetureModale();
+        })
+
+        // idem si on clique sur la bare modale
+        const bareModale = document.querySelector(".modale");
+        bareModale.addEventListener("click", function() {
+            fermetureModale();
+        })
+
+        //idem si on ferme la seconde fenetre modale
+        const femetureModale2 = document.querySelector("#fa-xmark");
+        femetureModale2.addEventListener("click", function() {
+            fermetureModale();
+        })
+
+    // si on clique sur supprimer un projet on stock les informations liées au projet à supprimé et on le supprime du front end
+        //récupération dans le DOM de l'icône de corbeille
+
+
+    // si on clique sur ajouter image on doit desactiver la première fenetre modale et activier la deuxieme
+        // récopération dans le DOM du bouton ajouter image
+        const ajouterPhoto = document.querySelector(".ajout-photo");
+        // ajout d'un listener au bouton ajouter photo
+        ajouterPhoto.addEventListener("click", function() {
+            document.querySelector(".modale_galerie").style.display = "none";
+            document.querySelector(".modale_image").style.display = "flex";
+        })
+
     
+    // si on clique sur la fleche retour on revient vers la première fenetre modale
+        // récopération dans le DOM du bouton ajouter photo
+        const retourModaleGallerie = document.querySelector(".fa-arrow-left");
+        // ajout d'un listener au bouton ajouter photo
+        retourModaleGallerie.addEventListener("click", function() {
+            document.querySelector(".modale_galerie").style.display = "flex";
+            document.querySelector(".modale_image").style.display = "none";
+
+        })
+       
+    // si on sélectionne une image pour le formulaire on a un apercu de l'image qui s'affiche au niveau de la fiv apercu et la div ajout-image est désactivé
+        //compléter
+    // si le formulaire est correctement remplit on ajoute on stock l'information du projet selectionné et on l'affiche dans le front end à la suite des autres projet et la fenetre modale se ferme
+        //compléter
+    // si le formulaire n'est pas correctement rempli o reçoit un message d'erreur
+        //compléter
+
+    // si on clique sur publier les changements les mofification enregistées sont envoyé au backend et on se déconnect 
+        //compléter
+        
 
 }
 
