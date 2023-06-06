@@ -173,11 +173,47 @@ function modeNonConnecte () {
     })
 }
 
+// fonction à executer en cas de fermeture de la fenêtre modale
 function fermetureModale() {
     document.querySelector(".modale_galerie").style.display = "none";
     document.querySelector(".darker-background").style.display = "none";
     document.querySelector(".modale_image").style.display = "none";
 }
+
+// fonction à effectuer lorque l'aperçu du formulaire d'ajout d'image doit être activé
+// On effectu le lien entre le DOM input file et la fonction javascript
+document.getElementById("image").onchange = function() {montrerApercu()};
+
+function montrerApercu() {
+    // on enregistre les information de l'image téléchargée
+    let image = document.getElementById("image").files;
+    console.log(image);
+    // s'il y a bien une image de téléchargée 
+    if (image.length > 0) {
+        
+        // mise en place de l'emplacement de l'aperçu image
+        document.querySelector(".apercu").style.display = "block";
+        document.querySelector(".import-image").style.display = "none";
+
+        // création de la balise image pour l'aperçu et ratachement à la balise aperçu
+        const apercuImage = document.createElement("img");
+        const apercuCadre = document.querySelector(".apercu");
+        apercuCadre.appendChild(apercuImage);
+        
+        // utilisation du constructeur FileReader()
+        let lecteurImage = new FileReader();
+        console.log(lecteurImage);
+
+        //ajout d'un listener en cas de téléchargement image pour l'attribution de la source de l'image 
+        lecteurImage.addEventListener("load", function() {
+            apercuImage.src = lecteurImage.result;
+        }, false);
+
+        lecteurImage.readAsDataURL(image[0]);
+    }
+   
+}
+
 
 // vérification du token dans le local storage
 

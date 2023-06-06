@@ -111,15 +111,15 @@
 							<div class="import-image">
 								<i class="fa-sharp fa-regular fa-image"></i>
 								<label for="image">+ Ajout photo</label>
-								<input type="file" id="image" name="image" accept="image/png, image/jpeg" size="32000000" hidden>
+								<input type="file" id="image" name="image" accept="image/png, image/jpeg" size="32000000" onchange="montrerApercu();" hidden required>
 								<p>jpg, png : 4mo max</p>
 							</div>
 							<div class="apercu"></div>	
 						</div>
-						<label for="titre">Titre</label>
-						<input type="text" id="titre" name="titre">
+						<label for="titre" >Titre</label>
+						<input type="text" id="titre" name="titre" required>
 						<label for="categorie">Catégorie</label>
-						<select id="categorie">
+						<select id="categorie" required>
 							<option value="" disabled selected hidden></option>
 							<option value="Objets">Objets</option>
 							<option value="Appartements">Appartements</option>

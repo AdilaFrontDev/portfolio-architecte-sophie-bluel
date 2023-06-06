@@ -576,10 +576,15 @@ footer nav li {
 
 .apercu {
 	display: none;
-	background-color: #000;
+	background-color: #CBD6DC;
 	height: 100%;
 	margin: auto;
 	width: 130px;
+	overflow: hidden;
+}
+
+.apercu img {
+	width: 100%;
 }
 
 .modale_image form, #login form {
