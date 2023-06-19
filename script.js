@@ -1,11 +1,14 @@
-// Récupération des données provenant du back-end pour les travaux
-const response = await fetch("http://localhost:5678/api/works")
-const works = await response.json();
-console.log(works);
+// // Récupération des données provenant du back-end pour les travaux
+// const response = await fetch("http://localhost:5678/api/works")
+// const works = await response.json();
+// console.log(works);
+
+import { getAllWorks, deleteWork } from "./callApi.js";
+
+let works = await getAllWorks();
 
 // Récupération de l'élément du DOM qui accueillera les travaux
 const sectionWorks = document.querySelector(".gallery");
-console.log(sectionWorks);
 
 //suppression du contenu de la div de classe Gallery avant integration dynamique du contenu
     sectionWorks.innerHTML= "";
@@ -28,7 +31,6 @@ function worksGenerator(works) {
 
 // récupération dans le DOM de la balise modale_galerie_images
 const galleireModaleImage = document.querySelector(".modale_galerie_images");
-console.log(galleireModaleImage);
 
 //suppression du contenu de la div de classe Gallery avant integration dynamique du contenu
     galleireModaleImage.innerHTML= "";
@@ -40,7 +42,7 @@ function modaleGalleryGenerator(works) {
         gallerieModale += `
         <figure class="miniature">
             <img src=${works[i].imageUrl}  alt=${works[i].title}>
-            <i class="fa-solid fa-trash-can"></i>
+            <i class="fa-solid fa-trash-can" id="${works[i].id}"></i>
             <i id="resize-icon" class="fa-solid fa-arrows-up-down-left-right"></i>
             <p>éditer</p>				
         </figure>
@@ -64,7 +66,6 @@ tousSort.addEventListener("click", function () {
     // Effacement de l'écran et regénération de la page avec les projets filtrées uniquement
     sectionWorks.innerHTML= "";
     worksGenerator(works);
-    console.log("tous");
 });
 
 // Ajout d'un listener pour la catégorie Objets
@@ -73,7 +74,7 @@ objetsSort.addEventListener("click", function() {
         const categorie = work.category;
         return categorie.id == 1;
     });
-    console.log(objetsSorted);
+   
     // Effacement de l'écran et regénération de la page avec les projets filtrées uniquement
     sectionWorks.innerHTML= "";
     worksGenerator(objetsSorted);
@@ -85,7 +86,6 @@ appartementsSort.addEventListener("click", function() {
         const categorie = work.category;
         return categorie.id == 2;
     });
-    console.log(appartementsSorted);
      // Effacement de l'écran et regénération de la page avec les projets filtrées uniquement
      sectionWorks.innerHTML= "";
      worksGenerator(appartementsSorted);
@@ -97,7 +97,6 @@ hotelsAndRestaurantsSort.addEventListener("click", function() {
         const categorie = work.category;
         return categorie.id == 3;
     });
-    console.log(hotelsAndRestaurantsSorted);
      // Effacement de l'écran et regénération de la page avec les projets filtrées uniquement
      sectionWorks.innerHTML= "";
      worksGenerator(hotelsAndRestaurantsSorted);
@@ -165,7 +164,6 @@ function modeNonConnecte () {
     // ajout du listener pour le logout avec action à effectuer
     logOut.addEventListener("click", function() {
         window.localStorage.removeItem("token");
-        console.log('coucou')
         // redirection vers la home page (ne semble pas fonctionner pour l'instant)
         location.href = "http://127.0.0.1:5500/FrontEnd/index.html";
         // Rétablissement des catégories de filtre
@@ -187,7 +185,7 @@ document.getElementById("image").onchange = function() {montrerApercu()};
 function montrerApercu() {
     // on enregistre les information de l'image téléchargée
     let image = document.getElementById("image").files;
-    console.log(image);
+
     // s'il y a bien une image de téléchargée 
     if (image.length > 0) {
         
@@ -202,7 +200,6 @@ function montrerApercu() {
         
         // utilisation du constructeur FileReader()
         let lecteurImage = new FileReader();
-        console.log(lecteurImage);
 
         //ajout d'un listener en cas de téléchargement image pour l'attribution de la source de l'image 
         lecteurImage.addEventListener("load", function() {
@@ -212,16 +209,25 @@ function montrerApercu() {
         lecteurImage.readAsDataURL(image[0]);
     }
    
+};
+
+function fermetureApercu() {
+    // suppression du contenu de la balise aperçu
+    const apercu = document.querySelector(".apercu");
+    apercu.innerHTML = "";
+
+    // restauration de la partie import image
+    document.querySelector(".apercu").style.display = "none";
+    document.querySelector(".import-image").style.display = "flex";
 }
 
 
 // vérification du token dans le local storage
 
-let storedToked = window.localStorage.getItem("token");
-console.log(storedToked);
+let storedToken = window.localStorage.getItem("token");
 
 // en cas de connexion reussite 
-if (storedToked !== null) {
+if (storedToken !== null) {
 
     // en cas de connexion on génère l'ensemble des éléments de l'espace reservé aux connectés
     modeConnecte();
@@ -249,29 +255,48 @@ if (storedToked !== null) {
         // ajout d'un listener au bouton de fermeture de la fenetre modale
         femetureModale.addEventListener("click", function() {
             fermetureModale();
+            fermetureApercu();
         })
 
         // idem si on clique à l'exterieur de la fenetre modale
         const darkenBackground = document.querySelector(".darker-background");
         darkenBackground.addEventListener("click", function() {
             fermetureModale();
+            fermetureApercu();
         })
 
         // idem si on clique sur la bare modale
         const bareModale = document.querySelector(".modale");
         bareModale.addEventListener("click", function() {
             fermetureModale();
+            fermetureApercu();
         })
 
         //idem si on ferme la seconde fenetre modale
         const femetureModale2 = document.querySelector("#fa-xmark");
         femetureModale2.addEventListener("click", function() {
             fermetureModale();
+            fermetureApercu();
         })
 
     // si on clique sur supprimer un projet on stock les informations liées au projet à supprimé et on le supprime du front end
         //récupération dans le DOM de l'icône de corbeille
+        const supprime = document.querySelectorAll(".fa-trash-can");
+        console.log(supprime);
 
+        console.log(works);
+
+        supprime.forEach((trashCan) => {
+            trashCan.addEventListener("click", (e) => {
+                // on sélectionne du projet dans la liste works et on le supprimer, l'id du bouton supprimé étant le même que celui du projet à supprimer   
+                let indice = e.target.id;
+                deleteWork(indice);
+         })
+        })
+
+
+    
+        
 
     // si on clique sur ajouter image on doit desactiver la première fenetre modale et activier la deuxieme
         // récopération dans le DOM du bouton ajouter image
@@ -281,7 +306,6 @@ if (storedToked !== null) {
             document.querySelector(".modale_galerie").style.display = "none";
             document.querySelector(".modale_image").style.display = "flex";
         })
-
     
     // si on clique sur la fleche retour on revient vers la première fenetre modale
         // récopération dans le DOM du bouton ajouter photo
@@ -290,14 +314,13 @@ if (storedToked !== null) {
         retourModaleGallerie.addEventListener("click", function() {
             document.querySelector(".modale_galerie").style.display = "flex";
             document.querySelector(".modale_image").style.display = "none";
-
+            fermetureApercu();
         })
-       
+    
     // si on sélectionne une image pour le formulaire on a un apercu de l'image qui s'affiche au niveau de la fiv apercu et la div ajout-image est désactivé
-        //compléter
+        montrerApercu();
+
     // si le formulaire est correctement remplit on ajoute on stock l'information du projet selectionné et on l'affiche dans le front end à la suite des autres projet et la fenetre modale se ferme
-        //compléter
-    // si le formulaire n'est pas correctement rempli o reçoit un message d'erreur
         //compléter
 
     // si on clique sur publier les changements les mofification enregistées sont envoyé au backend et on se déconnect 

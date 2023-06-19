@@ -124,6 +124,7 @@ nav li {
 
 .nav_link {
 	color: #000;
+	cursor: pointer;
 }
 
 .nav_link:hover {
@@ -227,6 +228,7 @@ nav li {
 	font-size: 16px;
 	line-height: 19px;
 	text-align: center;
+	cursor: pointer;
 }
 
 .categories p:hover {
@@ -285,6 +287,7 @@ input[type="submit"]{
 	width: 180px;
 	text-align: center;
 	border-radius: 60px ;
+	cursor: pointer;
 }
 
 .forgetedPassword a {
@@ -333,6 +336,7 @@ footer nav li {
 
 #introduction .modifier {
  margin: 15px 0;
+ cursor: pointer;
 }
 
 .modale {
@@ -365,6 +369,7 @@ footer nav li {
 	line-height: 40px;
 	font-weight: 500;
 	font-size: 14px;
+	cursor: pointer;
 }
 
 .shift {
@@ -439,6 +444,7 @@ footer nav li {
 	height: 40px;
 	width: 60px;
 	padding-top: 60px;
+	cursor: pointer;
 }
 
 .modale_galerie_images {
@@ -474,6 +480,7 @@ footer nav li {
 	text-align: center;
 	line-height: 17px;
 	border-radius: 2px;
+	cursor: pointer;
 }
 
 .miniature img{
@@ -496,6 +503,7 @@ footer nav li {
 	font-weight: 400;
 	font-size: 14px;
 	margin-top: 23px;
+	cursor: pointer;
 }
 
 .ajout-photo {
@@ -508,7 +516,8 @@ footer nav li {
 	height: 36px;
 	text-align: center;
 	line-height: 36px;
-	border-radius: 60px ;
+	border-radius: 60px;
+	cursor: pointer;
 }
 /* code spécifique à la fevetre modale ajout image*/
 
@@ -526,6 +535,7 @@ footer nav li {
 	width: 60px;
 	text-align: center;
 	line-height: 60px;
+	cursor: pointer;
 }
 
 .modale_image p {
@@ -602,6 +612,10 @@ footer nav li {
 	margin: auto;
 } 
 
+.modale_image input:invalid {
+	border: solid #D65353 2px;
+}
+
 .modale_image form label {
 	color: #3D3D3D;
 	margin: 20px 0 10px 8px;
@@ -619,4 +633,5 @@ footer nav li {
 	border-radius: 60px;
 	border: none;
 	margin: 0 101.5px;
+	cursor: pointer;
 }

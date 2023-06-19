@@ -106,7 +106,7 @@
 					<i id="fa-xmark" class="fa-solid fa-xmark"></i>
 				</div>
 				<p>Ajout photo</p>
-					<form action="#" method="post">
+					<form id="formulaire-ajout-image" action="#" method="post">
 						<div id="ajout-image">
 							<div class="import-image">
 								<i class="fa-sharp fa-regular fa-image"></i>
@@ -117,7 +117,7 @@
 							<div class="apercu"></div>	
 						</div>
 						<label for="titre" >Titre</label>
-						<input type="text" id="titre" name="titre" required>
+						<input type="text" id="titre" name="titre" required >
 						<label for="categorie">Catégorie</label>
 						<select id="categorie" required>
 							<option value="" disabled selected hidden></option>
@@ -241,6 +241,7 @@
 				</ul>
 			</nav>
 		</footer>
+		<script type="module" src="../callApi.js"></script>
 		<script type="module" src="../script.js"></script>
 	</body>
 </html>
