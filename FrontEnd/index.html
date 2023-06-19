@@ -106,7 +106,7 @@
 					<i id="fa-xmark" class="fa-solid fa-xmark"></i>
 				</div>
 				<p>Ajout photo</p>
-					<form id="formulaire-ajout-image" action="#" method="post">
+					<form id="formulaire-ajout-image" enctype="multipart/form-data" method="post" name="formulaire-ajout-image">
 						<div id="ajout-image">
 							<div class="import-image">
 								<i class="fa-sharp fa-regular fa-image"></i>
@@ -119,15 +119,16 @@
 						<label for="titre" >Titre</label>
 						<input type="text" id="titre" name="titre" required >
 						<label for="categorie">Catégorie</label>
-						<select id="categorie" required>
+						<select id="categorie" name="categorie" required>
 							<option value="" disabled selected hidden></option>
 							<option value="Objets">Objets</option>
 							<option value="Appartements">Appartements</option>
 							<option value="Hotels & restaurants">Hotels & restaurants</option>
 						</select>
 						<div class="separation"></div>
-						<input type="submit" value="Valider">
+						<input id="photo-ajout" type="submit" value="Valider">
 					</form>
+					<div class="reponse-api"></div>
 			</section>
 		</div>
 		

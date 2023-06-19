@@ -3,7 +3,7 @@
 // const works = await response.json();
 // console.log(works);
 
-import { getAllWorks, deleteWork } from "./callApi.js";
+import { getAllWorks, deleteWork, ajoutPhoto, getAllCategories} from "./callApi.js";
 
 let works = await getAllWorks();
 
@@ -159,16 +159,25 @@ function modeConnecte() {
 // fonction à executer en cas déconnexion
 
 function modeNonConnecte () {
-    // Récupération dans le DOM de l'élément logout
+    // Récupération dans le DOM de l'élément logout et publier les changements
     const logOut = document.querySelector("#log-out");
+    const publierChangement = document.querySelector(".publier");
     // ajout du listener pour le logout avec action à effectuer
     logOut.addEventListener("click", function() {
         window.localStorage.removeItem("token");
-        // redirection vers la home page (ne semble pas fonctionner pour l'instant)
+        // redirection vers la home page 
         location.href = "http://127.0.0.1:5500/FrontEnd/index.html";
         // Rétablissement des catégories de filtre
         document.querySelector(".categories").style.display = "flex";
-    })
+    });
+    // idem pour le bouton publier les changements
+    publierChangement.addEventListener("click", function() {
+        window.localStorage.removeItem("token");
+        // Rétablissement des catégories de filtre
+        document.querySelector(".categories").style.display = "flex";
+        // redirection vers la home page 
+        location.href = "http://127.0.0.1:5500/FrontEnd/index.html";
+    });
 }
 
 // fonction à executer en cas de fermeture de la fenêtre modale
@@ -205,10 +214,9 @@ function montrerApercu() {
         lecteurImage.addEventListener("load", function() {
             apercuImage.src = lecteurImage.result;
         }, false);
-
+        //lecture de l'url de l'image
         lecteurImage.readAsDataURL(image[0]);
     }
-   
 };
 
 function fermetureApercu() {
@@ -223,7 +231,6 @@ function fermetureApercu() {
 
 
 // vérification du token dans le local storage
-
 let storedToken = window.localStorage.getItem("token");
 
 // en cas de connexion reussite 
@@ -235,7 +242,7 @@ if (storedToken !== null) {
     // en cas de déconnexion
     modeNonConnecte ();
 
-    // si le delai de connection est dépassé on supprime le token et on revien sur la page d'accueil standard
+    // si le delai de connection est dépassé on supprime le token et on revien sur la page d'accueil standard (facultatif)
 
     // si on clique sur le bouton modifier de la partie portfolio
         // récupéraion dans le DOM du bouton modifier-gallerie
@@ -282,21 +289,17 @@ if (storedToken !== null) {
     // si on clique sur supprimer un projet on stock les informations liées au projet à supprimé et on le supprime du front end
         //récupération dans le DOM de l'icône de corbeille
         const supprime = document.querySelectorAll(".fa-trash-can");
-        console.log(supprime);
 
-        console.log(works);
-
+        //on rend les icones corbeille clickable pour chacun des projets dans la fenêtre modale
         supprime.forEach((trashCan) => {
             trashCan.addEventListener("click", (e) => {
+                e.preventDefault();
                 // on sélectionne du projet dans la liste works et on le supprimer, l'id du bouton supprimé étant le même que celui du projet à supprimer   
                 let indice = e.target.id;
+                // On supprime le projet concerné par l'icone corbeille selectonnée
                 deleteWork(indice);
-         })
-        })
-
-
-    
-        
+            })
+        });
 
     // si on clique sur ajouter image on doit desactiver la première fenetre modale et activier la deuxieme
         // récopération dans le DOM du bouton ajouter image
@@ -305,7 +308,7 @@ if (storedToken !== null) {
         ajouterPhoto.addEventListener("click", function() {
             document.querySelector(".modale_galerie").style.display = "none";
             document.querySelector(".modale_image").style.display = "flex";
-        })
+        });
     
     // si on clique sur la fleche retour on revient vers la première fenetre modale
         // récopération dans le DOM du bouton ajouter photo
@@ -315,17 +318,12 @@ if (storedToken !== null) {
             document.querySelector(".modale_galerie").style.display = "flex";
             document.querySelector(".modale_image").style.display = "none";
             fermetureApercu();
-        })
+        });
     
     // si on sélectionne une image pour le formulaire on a un apercu de l'image qui s'affiche au niveau de la fiv apercu et la div ajout-image est désactivé
         montrerApercu();
 
     // si le formulaire est correctement remplit on ajoute on stock l'information du projet selectionné et on l'affiche dans le front end à la suite des autres projet et la fenetre modale se ferme
-        //compléter
-
-    // si on clique sur publier les changements les mofification enregistées sont envoyé au backend et on se déconnect 
-        //compléter
-        
-
+    ajoutPhoto();
 }
 
