@@ -312,6 +312,8 @@ input[type="submit"]{
 	font-weight: 600;
 }
 
+
+
 /* fin section contact et login*/
 
 footer {
@@ -336,7 +338,10 @@ footer nav li {
 
 #introduction .modifier {
  margin: 15px 0;
- cursor: pointer;
+}
+
+.modifier {
+	cursor: pointer;
 }
 
 .modale {

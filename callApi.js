@@ -54,25 +54,23 @@ export async function deleteWork(workId) {
     } catch (error) {
         console.error(error);
     }
-};
+}; 
 
-
-   
+document.getElementById("photo-ajout").onclick = function() {ajoutPhoto()};
    
 export async function ajoutPhoto() {
    // Récupération dans le DOM du bouton d'envoie du formulaire d'ajout de photo 
     let photoSubmit = document.forms.namedItem("formulaire-ajout-image");
     console.log(photoSubmit);
-
-    
     
     // Ajout d'un listener au bouton de submission du formulaire d'ajout de photo
-    photoSubmit.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        let responseApi = document.querySelector(".reponse-api");
-        let formData = new FormData(photoSubmit);
-  
+    // photoSubmit.addEventListener("onclick", async (e) => {
+        // event.preventDefault();
+        // event.stopPropagation();
+    
         // récupération des éléments qui constituront le body de la requête POST
+        let formData = new FormData(photoSubmit);
+
             //stockage du titre   
             const title = document.getElementById("titre").value;
 
@@ -88,64 +86,53 @@ export async function ajoutPhoto() {
             // recherche de la catéogie concernée par la photo
             let categoriePhoto = document.getElementById("categorie").value;
             let indiceCategorie = nomsCategories.indexOf(categoriePhoto);
-
             //stockage de d'indice de la catéorie
             const categoryId = indicesCategories[indiceCategorie];
-            console.log(categoryId)
-;  
+
+        // On intègre les donnée fu formulaire au formData
         formData.append("title", title);
-        formData.append("imageURL", imageURL);
-        formData.append("categoryId", categoryId);
+        formData.append("image", imageURL);
+        formData.append("category", categoryId);
     
         let storedToken = window.localStorage.getItem("token");
-        let url = "http://localhost:5678/api/works";
-        let httpOptions = "";
         let bearer = "Bearer " + storedToken;
-        console.log(bearer);
+        let httpOptions = "";
 
         if (storedToken !== null) {
             const headersContent = {
                 "Accept": "*/*",
-                "Content-Type": "multipart/form-data",
                 "Authorization": bearer
             };
-            console.log(headersContent);
             const headers = new Headers(headersContent);
-            console.log(headers);
             httpOptions = {
-            method: "POST",
-            headers: headers,
-            // body: formData
+                method: "POST",
+                headers: headers,
+                body: formData
             };
             console.log(httpOptions);
         }
-    
-            // try {   
-            //     const response = await fetch(url, httpOptions);
-            //     console.log(response.status);
-            //     if (response.status === 201) {
-            //         let works = await getAllWorks();
-            //             // Récupération de l'élément du DOM qui accueillera les travaux et suppression du contenu avant integration dynamique du contenu
-            //             const sectionWorks = document.querySelector(".gallery");
-            //             sectionWorks.innerHTML= "";
-            //             worksGenerator(works);
-            //             // Récupération dans le DOM de la balise modale_galerie_images  et suppression du contenu avant integration dynamique du contenu
-            //             const galleireModaleImage = document.querySelector(".modale_galerie_images");
-            //             galleireModaleImage.innerHTML= "";
-            //             modaleGalleryGenerator(works);
-            //     } else {
-            //         throw new Error(response.status);
-            //     }
-            // } catch (error) {
-            //     console.error(error);
-            // }
 
+        try {   
+            const response = await fetch("http://localhost:5678/api/works", httpOptions);
+            console.log(response.status);
+            if (response.status === 201) {
+                let works = await getAllWorks();
 
-       });
-  
+                // Récupération de l'élément du DOM qui accueillera les travaux et suppression du contenu avant integration dynamique du contenu
+                const sectionWorks = document.querySelector(".gallery");
+                sectionWorks.innerHTML= "";
+                worksGenerator(works);
 
-
-    
-
-    
-}
+                // Récupération dans le DOM de la balise modale_galerie_images  et suppression du contenu avant integration dynamique du contenu
+                const galleireModaleImage = document.querySelector(".modale_galerie_images");
+                galleireModaleImage.innerHTML= "";
+                modaleGalleryGenerator(works);
+            } else {
+                alert(response.status);
+                throw new Error(response.status);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    // });    
+};

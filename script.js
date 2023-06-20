@@ -144,6 +144,7 @@ function modeConnecte() {
             const pModifier2 = document.createElement("p");
             pModifier1.classList.add("modifier");
             pModifier2.classList.add("modifier-gallerie");
+            pModifier2.classList.add("modifier")
         
             pModifier1.innerHTML = `<i class="fa-regular fa-pen-to-square"></i> modifier`;
             pModifier2.innerHTML = `<i class="fa-regular fa-pen-to-square"></i> modifier`;
@@ -263,6 +264,7 @@ if (storedToken !== null) {
         femetureModale.addEventListener("click", function() {
             fermetureModale();
             fermetureApercu();
+            document.getElementById("formulaire-ajout-image").reset();
         })
 
         // idem si on clique à l'exterieur de la fenetre modale
@@ -270,6 +272,7 @@ if (storedToken !== null) {
         darkenBackground.addEventListener("click", function() {
             fermetureModale();
             fermetureApercu();
+            document.getElementById("formulaire-ajout-image").reset();
         })
 
         // idem si on clique sur la bare modale
@@ -277,6 +280,7 @@ if (storedToken !== null) {
         bareModale.addEventListener("click", function() {
             fermetureModale();
             fermetureApercu();
+            document.getElementById("formulaire-ajout-image").reset();
         })
 
         //idem si on ferme la seconde fenetre modale
@@ -284,6 +288,7 @@ if (storedToken !== null) {
         femetureModale2.addEventListener("click", function() {
             fermetureModale();
             fermetureApercu();
+            document.getElementById("formulaire-ajout-image").reset();
         })
 
     // si on clique sur supprimer un projet on stock les informations liées au projet à supprimé et on le supprime du front end
@@ -324,6 +329,5 @@ if (storedToken !== null) {
         montrerApercu();
 
     // si le formulaire est correctement remplit on ajoute on stock l'information du projet selectionné et on l'affiche dans le front end à la suite des autres projet et la fenetre modale se ferme
-    ajoutPhoto();
+        // ajoutPhoto();
 }
-
