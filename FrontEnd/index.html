@@ -19,7 +19,7 @@
 		</div>
 		<div class="darker-background"></div>
 		<div class="modale_fenetre">
-			<section class="modale_galerie">
+			<div class="modale_galerie">
 					<div class="modale_galerie_fermeture">
 						<i class="fa-solid fa-xmark"></i>
 					</div>
@@ -29,8 +29,8 @@
 					<div class="separation"></div>
 					<div class="ajout-photo">Ajouter une photo</div>
 					<p id="modale_galerie_supprimer">Supprimer la galerie</p>
-			</section>
-			<section class="modale_image">
+			</div>
+			<div class="modale_image">
 				<div class="modale_image_navigation">
 					<i class="fa-solid fa-arrow-left"></i>
 					<i id="fa-xmark" class="fa-solid fa-xmark"></i>
@@ -41,25 +41,24 @@
 							<div class="import-image">
 								<i class="fa-sharp fa-regular fa-image"></i>
 								<label for="image">+ Ajout photo</label>
-								<input type="file" id="image" name="image" accept="image/png, image/jpeg" size="32000000" onchange="montrerApercu();" hidden required>
+								<input class="required" type="file" id="image" name="image" accept="image/png, image/jpeg" size="32000000" onchange="montrerApercu();" hidden required>
 								<p>jpg, png : 4mo max</p>
 							</div>
 							<div class="apercu"></div>	
 						</div>
 						<label for="titre" >Titre</label>
-						<input type="text" id="titre" name="titre" required >
+						<input class="required" type="text" id="titre" name="titre" required >
 						<label for="categorie">Catégorie</label>
-						<select id="categorie" name="categorie" required>
+						<select class="required" id="categorie" name="categorie" required>
 							<option value="" disabled selected hidden></option>
 							<option value="Objets">Objets</option>
 							<option value="Appartements">Appartements</option>
 							<option value="Hotels & restaurants">Hotels & restaurants</option>
 						</select>
 						<div class="separation"></div>
-						
 					</form>
-					<input id="photo-ajout" type="button" value="Valider" onclick="ajoutPhoto()">
-			</section>
+					<input class="autorise" id="photo-ajout" type="button" value="Valider" onclick="ajoutPhoto()">
+			</div>
 		</div>
 		<header>
 			<h1>Sophie Bluel <span>Architecte d'inteérieur</span></h1>

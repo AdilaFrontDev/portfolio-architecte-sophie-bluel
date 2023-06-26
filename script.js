@@ -104,7 +104,6 @@ hotelsAndRestaurantsSort.addEventListener("click", function() {
 
 
 // fonctions à executer en cas de connexion réussite
-
 function modeConnecte() {
         // Recupétation du DOM de la bare de navigation 
         const navigation = document.querySelector("#nav");
@@ -154,7 +153,6 @@ function modeConnecte() {
             
             // Mise en silence des catégories
             document.querySelector(".categories").style.display = "none";
-
 }
 
 // fonction à executer en cas déconnexion
@@ -229,6 +227,24 @@ function fermetureApercu() {
     document.querySelector(".apercu").style.display = "none";
     document.querySelector(".import-image").style.display = "flex";
 }
+
+
+    //récupération dans le DOM des champs requis pour le formulaire d'ajout de photo et du bouton d'envoie
+    let boutonEnvoie = document.querySelector("#photo-ajout");
+    boutonEnvoie.disabled = true;
+    console.log(boutonEnvoie);
+    // Récupération dans le DOM du bouton d'envoie du formulaire d'ajout de photo 
+    let photoSubmit = document.forms.namedItem("formulaire-ajout-image");
+    console.log(photoSubmit);
+    photoSubmit.addEventListener("mouseover", (e) =>{
+        let title = document.getElementById("titre").value;
+        let image = document.getElementById("image").files[0];
+        let categoriePhoto = document.getElementById("categorie").value;
+
+        if (title.length > 0 && image.size > 0 && categoriePhoto.length > 0) {
+            boutonEnvoie.disabled = false;
+        }
+    });
 
 
 // vérification du token dans le local storage
@@ -327,7 +343,4 @@ if (storedToken !== null) {
     
     // si on sélectionne une image pour le formulaire on a un apercu de l'image qui s'affiche au niveau de la fiv apercu et la div ajout-image est désactivé
         montrerApercu();
-
-    // si le formulaire est correctement remplit on ajoute on stock l'information du projet selectionné et on l'affiche dans le front end à la suite des autres projet et la fenetre modale se ferme
-        // ajoutPhoto();
 }
