@@ -1,9 +1,4 @@
-// // Récupération des données provenant du back-end pour les travaux
-// const response = await fetch("http://localhost:5678/api/works")
-// const works = await response.json();
-// console.log(works);
-
-import { getAllWorks, deleteWork, ajoutPhoto, getAllCategories} from "./callApi.js";
+import { getAllWorks, deleteWork, getAllCategories} from "./callApi.js";
 
 let works = await getAllWorks();
 
@@ -50,56 +45,62 @@ function modaleGalleryGenerator(works) {
     }
     galleireModaleImage.innerHTML= gallerieModale;
 }
-
     
 // premier affichage de la page
 worksGenerator(works);
 
 // Récupération des éléments du DOM pour les boutons catégories
-const tousSort = document.querySelector(".tous");
-const objetsSort = document.querySelector(".objets");
-const appartementsSort = document.querySelector(".appartements");
-const hotelsAndRestaurantsSort = document.querySelector(".hotelsAndRestaurants");
+const tousSort = document.querySelector("#tous");
+const objetsSort = document.querySelector("#objets");
+const appartementsSort = document.querySelector("#appartements");
+const hotelsAndRestaurantsSort = document.querySelector("#hotelsAndRestaurants");
+
+
+// récupération de la liste des catégories à partir du backend
+let categories = await getAllCategories();
+// extraction des id et des noms de catégorie
+let nomsCategories = categories.map(categorie => categorie.name);
+let indicesCategories = categories.map(categorie => categorie.id);
+console.log(nomsCategories);
+console.log(indicesCategories);
+
+// récupération à partir du DOM des boutons filtres
+let filtres = document.getElementsByClassName("categorie");
+console.log(filtres);
+
+for (let i = 0; i < filtres.length; i++) {
+    // on recupère l'attribut name de l'élément html de la catégorie concernée, 
+    // ATTENTION le name de l'élément HTML doit être rigoureusement identique à celui utilisé dans le backend pour la même catégorie
+    const categorieFiltre = filtres[i].getAttribute("name");
+    
+    // on récupère l'élément html de la catégorie concernée
+    const categorieSort = filtres[i];
+
+    //stockage de d'indice de la catéorie cocnernée
+    const indiceCategorie = nomsCategories.indexOf(categorieFiltre);
+
+    // puis on récupère l'ID associé
+    const categoryId = indicesCategories[indiceCategorie];
+
+    //on ajout un listerner à la catégorie concernée
+    categorieSort.addEventListener("click", function () {
+        const categorieSorted = works.filter(function(work) {
+            const categorie = work.category;
+            // on utilise cet ID pour sélectionner les travaux qui nous intéresse
+            return categorie.id == categoryId;
+        })
+        // Effacement de l'écran et regénération de la page avec les projets filtrées uniquement
+        sectionWorks.innerHTML= "";
+        worksGenerator(categorieSorted);
+    })
+};
+
 
 // Ajout d'un listener pour la catégorie Tous
 tousSort.addEventListener("click", function () {
-    // Effacement de l'écran et regénération de la page avec les projets filtrées uniquement
+    // Effacement de l'écran et regénération de la page avec tous les projets  
     sectionWorks.innerHTML= "";
     worksGenerator(works);
-});
-
-// Ajout d'un listener pour la catégorie Objets
-objetsSort.addEventListener("click", function() {
-    const objetsSorted = works.filter(function(work) {
-        const categorie = work.category;
-        return categorie.id == 1;
-    });
-   
-    // Effacement de l'écran et regénération de la page avec les projets filtrées uniquement
-    sectionWorks.innerHTML= "";
-    worksGenerator(objetsSorted);
-});
-
-// Ajout d'un listener pour la catégorie Appartements
-appartementsSort.addEventListener("click", function() {
-    const appartementsSorted = works.filter(function(work) {
-        const categorie = work.category;
-        return categorie.id == 2;
-    });
-     // Effacement de l'écran et regénération de la page avec les projets filtrées uniquement
-     sectionWorks.innerHTML= "";
-     worksGenerator(appartementsSorted);
-});
-
-// Ajout d'un listener pour la catégorie Hôtels & Restaurants
-hotelsAndRestaurantsSort.addEventListener("click", function() {
-    const hotelsAndRestaurantsSorted = works.filter(function(work) {
-        const categorie = work.category;
-        return categorie.id == 3;
-    });
-     // Effacement de l'écran et regénération de la page avec les projets filtrées uniquement
-     sectionWorks.innerHTML= "";
-     worksGenerator(hotelsAndRestaurantsSorted);
 });
 
 

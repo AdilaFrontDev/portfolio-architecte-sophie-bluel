@@ -13,8 +13,6 @@ export async function getAllCategories() {
 };
 
 export async function deleteWork(workId) {
-    
-    
     let storedToken = window.localStorage.getItem("token");
     let url = "";
     let httpOptions = "";
