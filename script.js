@@ -1,4 +1,4 @@
-import { getAllWorks, deleteWork, getAllCategories, ajoutPhoto} from "./callApi.js";
+import { getAllWorks, deleteWorkAPI, getAllCategories, ajoutPhoto} from "./callApi.js";
 
 let works = await getAllWorks();
 
@@ -6,16 +6,15 @@ let works = await getAllWorks();
 const sectionWorks = document.querySelector(".gallery");
 
 //suppression du contenu de la div de classe Gallery avant integration dynamique du contenu
-    sectionWorks.innerHTML= "";
+sectionWorks.innerHTML= "";
 
 function worksGenerator(works) {
-    
     // initialisation de la variavle;
     let figureHTML = "";
     for (let i =  0; i < works.length; i++) {
         // template litteral pour les projets de la gallerie
         figureHTML += `
-        <figure class="${works[i].id}">
+        <figure class="figure-${works[i].id}">
 						<img src=${works[i].imageUrl}  alt=${works[i].title}>
 						<figcaption>${works[i].title}</figcaption>
 	    </figure>
@@ -35,7 +34,7 @@ function modaleGalleryGenerator(works) {
     let gallerieModale = "";
     for(let i =  0; i < works.length; i++) {
         gallerieModale += `
-        <figure class="miniature ${works[i].id}">
+        <figure class="miniature figure-${works[i].id}">
             <img src=${works[i].imageUrl}  alt=${works[i].title}>
             <i class="fa-solid fa-trash-can" id="${works[i].id}"></i>
             <i id="resize-icon" class="fa-solid fa-arrows-up-down-left-right"></i>
@@ -49,24 +48,15 @@ function modaleGalleryGenerator(works) {
 // premier affichage de la page
 worksGenerator(works);
 
-// Récupération des éléments du DOM pour les boutons catégories
-const tousSort = document.querySelector("#tous");
-const objetsSort = document.querySelector("#objets");
-const appartementsSort = document.querySelector("#appartements");
-const hotelsAndRestaurantsSort = document.querySelector("#hotelsAndRestaurants");
-
 
 // récupération de la liste des catégories à partir du backend
 let categories = await getAllCategories();
 // extraction des id et des noms de catégorie
 let nomsCategories = categories.map(categorie => categorie.name);
 let indicesCategories = categories.map(categorie => categorie.id);
-console.log(nomsCategories);
-console.log(indicesCategories);
 
 // récupération à partir du DOM des boutons filtres
 let filtres = document.getElementsByClassName("categorie");
-console.log(filtres);
 
 for (let i = 0; i < filtres.length; i++) {
     // on recupère l'attribut name de l'élément html de la catégorie concernée, 
@@ -95,7 +85,8 @@ for (let i = 0; i < filtres.length; i++) {
     })
 };
 
-
+// Récupération des éléments du DOM pour les boutons catégories
+const tousSort = document.querySelector("#tous");
 // Ajout d'un listener pour la catégorie Tous
 tousSort.addEventListener("click", function () {
     // Effacement de l'écran et regénération de la page avec tous les projets  
@@ -159,9 +150,8 @@ function modeConnecte() {
 // fonction à executer en cas déconnexion
 
 function modeNonConnecte () {
-    // Récupération dans le DOM de l'élément logout et publier les changements
+    // Récupération dans le DOM de l'élément logout 
     const logOut = document.querySelector("#log-out");
-    const publierChangement = document.querySelector(".publier");
     // ajout du listener pour le logout avec action à effectuer
     logOut.addEventListener("click", function() {
         window.localStorage.removeItem("token");
@@ -170,8 +160,20 @@ function modeNonConnecte () {
         // Rétablissement des catégories de filtre
         document.querySelector(".categories").style.display = "flex";
     });
+}
+
+function publierChangements(tableauIdProjetsASupprimer) {
+    // Récupération dans le DOM de l'élément publier les changements
+    const publierChangement = document.querySelector(".publier");
     // idem pour le bouton publier les changements
     publierChangement.addEventListener("click", function() {
+        // suppression des travaux selectionnés avec la modale via l'API
+        for (const indice of tableauIdProjetsASupprimer) {
+            deleteWorkAPI(indice);
+        }
+        // ajout des photos via l'API ( a compléter)
+
+        // suppression du token dans le local storage
         window.localStorage.removeItem("token");
         // Rétablissement des catégories de filtre
         document.querySelector(".categories").style.display = "flex";
@@ -219,8 +221,6 @@ function montrerApercu() {
             lecteurImage.readAsDataURL(image[0]);
         }
     })
-
-    
 };
 
 function fermetureApercu() {
@@ -237,10 +237,10 @@ function fermetureApercu() {
     //récupération dans le DOM des champs requis pour le formulaire d'ajout de photo et du bouton d'envoie
     let boutonEnvoie = document.querySelector("#photo-ajout");
     boutonEnvoie.disabled = true;
-    console.log(boutonEnvoie);
+    // console.log(boutonEnvoie);
     // Récupération dans le DOM du bouton d'envoie du formulaire d'ajout de photo 
     let photoSubmit = document.forms.namedItem("formulaire-ajout-image");
-    console.log(photoSubmit);
+    // console.log(photoSubmit);
     photoSubmit.addEventListener("mouseover", (e) =>{
         let title = document.getElementById("titre").value;
         let image = document.getElementById("image").files[0];
@@ -250,8 +250,7 @@ function fermetureApercu() {
             boutonEnvoie.disabled = false;
         }
     });
-
-
+    
 // vérification du token dans le local storage
 let storedToken = window.localStorage.getItem("token");
 
@@ -302,7 +301,7 @@ if (storedToken !== null) {
             fermetureModale();
             fermetureApercu();
             document.getElementById("formulaire-ajout-image").reset();
-        })
+        });
 
         //idem si on ferme la seconde fenetre modale
         const femetureModale2 = document.querySelector("#fa-xmark");
@@ -310,21 +309,6 @@ if (storedToken !== null) {
             fermetureModale();
             fermetureApercu();
             document.getElementById("formulaire-ajout-image").reset();
-        })
-
-    // si on clique sur supprimer un projet on stock les informations liées au projet à supprimé et on le supprime du front end
-        //récupération dans le DOM de l'icône de corbeille
-        const supprime = document.querySelectorAll(".fa-trash-can");
-
-        //on rend les icones corbeille clickable pour chacun des projets dans la fenêtre modale
-        supprime.forEach((trashCan) => {
-            trashCan.addEventListener("click", (e) => {
-                e.preventDefault();
-                // on sélectionne du projet dans la liste works et on le supprimer, l'id du bouton supprimé étant le même que celui du projet à supprimer   
-                let indice = e.target.id;
-                // On supprime le projet concerné par l'icone corbeille selectonnée
-                deleteWork(indice);
-            })
         });
 
     // si on clique sur ajouter image on doit desactiver la première fenetre modale et activier la deuxieme
@@ -348,7 +332,38 @@ if (storedToken !== null) {
     
     // si on sélectionne une image pour le formulaire on a un apercu de l'image qui s'affiche au niveau de la fiv apercu et la div ajout-image est désactivé
         montrerApercu();
-    
-        ajoutPhoto();
 
+    // si on clique sur supprimer un projet on stock les informations liées au projet à supprimé et on le supprime du front end
+            //on crée un array pour stocker les id des projets à supprimer 
+            let idProjetASupprimer = [];
+            //récupération dans le DOM de l'icône de corbeille
+            const supprime = document.querySelectorAll(".fa-trash-can");
+            //on rend les icones corbeille clickable pour chacun des projets dans la fenêtre modale
+            supprime.forEach((trashCan) => {
+                trashCan.addEventListener("click", (e) => {
+                    
+                    e.preventDefault();
+                    // on sélectionne du projet dans la liste works et on le supprimer, l'id du bouton supprimé étant le même que celui du projet à supprimer   
+                    let indice = e.target.id;
+                    // On supprime du DOM le projet concerné par l'icone corbeille selectonnée dans la gallerie de la page d'accueil et dans la modale
+                    const sectionWorks = document.getElementsByClassName(`figure-${indice}`);
+                    sectionWorks[1].remove();
+                    sectionWorks[0].remove();
+
+                    // récupération du projet concerné dans la liste des projets
+                    const indicesProjets = works.map(work => work.id);
+                    const indiceProjetASupprimer = indicesProjets.indexOf(parseInt(indice));
+                    works.splice(indiceProjetASupprimer,1);
+                    console.log(works);
+                   
+                    // récupération de l'Id du projet à supprimer quand les changements seront enregistré
+                    idProjetASupprimer.push(indice,1);
+                
+                })
+            });
+         
+        ajoutPhoto();
+        publierChangements(idProjetASupprimer);
 }  
+
+

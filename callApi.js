@@ -12,7 +12,7 @@ export async function getAllCategories() {
     return categories;
 };
 
-export async function deleteWork(workId) {
+export async function deleteWorkAPI(workId) {
     let storedToken = window.localStorage.getItem("token");
     let url = "";
     let httpOptions = "";
@@ -34,31 +34,28 @@ export async function deleteWork(workId) {
         url = "http://localhost:5678/api/works/" + workId;
         console.log(httpOptions);
     }
-               // Récupération de l'élément du DOM qui accueillera les travaux et suppression du contenu avant integration dynamique du contenu
-                const sectionWorks = document.querySelector(`.${workId}`);
-                remove(sectionWorks);
-    // try {     
-    //     const response = await fetch(url, httpOptions);
-    //     console.log(response.status);
-    //     if (response.status === 200) {
+    try {     
+        const response = await fetch(url, httpOptions);
+        console.log(response.status);
+        if (response.status === 200) {
            
-    //     } else {
-    //         throw new Error(response.status);
-    //     }
-    // } catch (error) {
-    //     console.error(error);
-    // }
+        } else {
+            throw new Error(response.status);
+        }
+    } catch (error) {
+        console.error(error);
+    }
 }; 
    
 export async function ajoutPhoto() {
    // Récupération dans le DOM du bouton d'envoie du formulaire d'ajout de photo 
     const photoSubmit = document.forms.namedItem("formulaire-ajout-image");
-    console.log(photoSubmit);
+    // console.log(photoSubmit);
     const imageInput = document.querySelector("#photo-ajout");
  
     // Ajout d'un listener au bouton de submission du formulaire d'ajout de photo
     imageInput.addEventListener("click", async (e) => {
-        console.log('coucou');
+        // console.log('coucou');
         e.preventDefault();    
             //stockage du titre   
             const title = document.getElementById("titre").value;
