@@ -34,50 +34,40 @@ export async function deleteWork(workId) {
         url = "http://localhost:5678/api/works/" + workId;
         console.log(httpOptions);
     }
-
-    try {   
-        const response = await fetch(url, httpOptions);
-        console.log(response.status);
-        if (response.status === 200) {
-            let works = await getAllWorks();
-                // Récupération de l'élément du DOM qui accueillera les travaux et suppression du contenu avant integration dynamique du contenu
-                const sectionWorks = document.querySelector(".gallery");
-                sectionWorks.innerHTML= "";
-                worksGenerator(works);
-                // Récupération dans le DOM de la balise modale_galerie_images  et suppression du contenu avant integration dynamique du contenu
-                const galleireModaleImage = document.querySelector(".modale_galerie_images");
-                galleireModaleImage.innerHTML= "";
-                modaleGalleryGenerator(works);
-        } else {
-            throw new Error(response.status);
-        }
-    } catch (error) {
-        console.error(error);
-    }
+               // Récupération de l'élément du DOM qui accueillera les travaux et suppression du contenu avant integration dynamique du contenu
+                const sectionWorks = document.querySelector(`.${workId}`);
+                remove(sectionWorks);
+    // try {     
+    //     const response = await fetch(url, httpOptions);
+    //     console.log(response.status);
+    //     if (response.status === 200) {
+           
+    //     } else {
+    //         throw new Error(response.status);
+    //     }
+    // } catch (error) {
+    //     console.error(error);
+    // }
 }; 
-
-document.getElementById("photo-ajout").onclick = function() {ajoutPhoto()};
    
 export async function ajoutPhoto() {
    // Récupération dans le DOM du bouton d'envoie du formulaire d'ajout de photo 
-    let photoSubmit = document.forms.namedItem("formulaire-ajout-image");
+    const photoSubmit = document.forms.namedItem("formulaire-ajout-image");
     console.log(photoSubmit);
-    
+    const imageInput = document.querySelector("#photo-ajout");
+ 
     // Ajout d'un listener au bouton de submission du formulaire d'ajout de photo
-    // photoSubmit.addEventListener("onclick", async (e) => {
-        // event.preventDefault();
-        // event.stopPropagation();
-    
-        // récupération des éléments qui constituront le body de la requête POST
-        let formData = new FormData(photoSubmit);
-
+    imageInput.addEventListener("click", async (e) => {
+        console.log('coucou');
+        e.preventDefault();    
             //stockage du titre   
             const title = document.getElementById("titre").value;
-
             // récupération dans le DOM du file imput
             const selectedFile = document.getElementById("image").files[0];
+            let imageName = selectedFile.name;
+            imageName = imageName.slice(0,-4);
             //stockage de l'URL
-            const imageURL = window.URL.createObjectURL(selectedFile);
+            const imageUrl = `http://localhost:5678/images/${imageName}${selectedFile.lastModified}.png`;
 
             // récupération de la liste des catégories à partir du backend
             let categories = await getAllCategories();
@@ -89,9 +79,11 @@ export async function ajoutPhoto() {
             //stockage de d'indice de la catéorie
             const categoryId = indicesCategories[indiceCategorie];
 
+        // récupération des éléments qui constituront le body de la requête POST
+        let formData = new FormData(photoSubmit);
         // On intègre les donnée fu formulaire au formData
         formData.append("title", title);
-        formData.append("image", imageURL);
+        formData.append("image", imageUrl);
         formData.append("category", categoryId);
     
         let storedToken = window.localStorage.getItem("token");
@@ -116,17 +108,17 @@ export async function ajoutPhoto() {
             const response = await fetch("http://localhost:5678/api/works", httpOptions);
             console.log(response.status);
             if (response.status === 201) {
-                let works = await getAllWorks();
+                // let works = await getAllWorks();
 
-                // Récupération de l'élément du DOM qui accueillera les travaux et suppression du contenu avant integration dynamique du contenu
-                const sectionWorks = document.querySelector(".gallery");
-                sectionWorks.innerHTML= "";
-                worksGenerator(works);
+                // // Récupération de l'élément du DOM qui accueillera les travaux et suppression du contenu avant integration dynamique du contenu
+                // const sectionWorks = document.querySelector(".gallery");
+                // sectionWorks.innerHTML= "";
+                // worksGenerator(works);
 
-                // Récupération dans le DOM de la balise modale_galerie_images  et suppression du contenu avant integration dynamique du contenu
-                const galleireModaleImage = document.querySelector(".modale_galerie_images");
-                galleireModaleImage.innerHTML= "";
-                modaleGalleryGenerator(works);
+                // // Récupération dans le DOM de la balise modale_galerie_images  et suppression du contenu avant integration dynamique du contenu
+                // const galleireModaleImage = document.querySelector(".modale_galerie_images");
+                // galleireModaleImage.innerHTML= "";
+                // modaleGalleryGenerator(works);
             } else {
                 alert(response.status);
                 throw new Error(response.status);
@@ -134,5 +126,5 @@ export async function ajoutPhoto() {
         } catch (error) {
             console.error(error);
         }
-    // });    
+    });    
 };

@@ -1,4 +1,4 @@
-import { getAllWorks, deleteWork, getAllCategories} from "./callApi.js";
+import { getAllWorks, deleteWork, getAllCategories, ajoutPhoto} from "./callApi.js";
 
 let works = await getAllWorks();
 
@@ -15,7 +15,7 @@ function worksGenerator(works) {
     for (let i =  0; i < works.length; i++) {
         // template litteral pour les projets de la gallerie
         figureHTML += `
-        <figure>
+        <figure class="${works[i].id}">
 						<img src=${works[i].imageUrl}  alt=${works[i].title}>
 						<figcaption>${works[i].title}</figcaption>
 	    </figure>
@@ -35,7 +35,7 @@ function modaleGalleryGenerator(works) {
     let gallerieModale = "";
     for(let i =  0; i < works.length; i++) {
         gallerieModale += `
-        <figure class="miniature">
+        <figure class="miniature ${works[i].id}">
             <img src=${works[i].imageUrl}  alt=${works[i].title}>
             <i class="fa-solid fa-trash-can" id="${works[i].id}"></i>
             <i id="resize-icon" class="fa-solid fa-arrows-up-down-left-right"></i>
@@ -187,36 +187,40 @@ function fermetureModale() {
     document.querySelector(".modale_image").style.display = "none";
 }
 
-// fonction à effectuer lorque l'aperçu du formulaire d'ajout d'image doit être activé
-// On effectu le lien entre le DOM input file et la fonction javascript
-document.getElementById("image").onchange = function() {montrerApercu()};
-
+// fonction montre l'aperçu dde l'image selectionnée dans le formulaire d'ajout d'image
 function montrerApercu() {
-    // on enregistre les information de l'image téléchargée
-    let image = document.getElementById("image").files;
+    // on récupère du DOM l'élément HTML input file
+    const imageInput = document.querySelector("#image");
+    // on ajout en listenr qui s'active quand on sélectionne une image
+    imageInput.addEventListener("change", function () {
 
-    // s'il y a bien une image de téléchargée 
-    if (image.length > 0) {
-        
-        // mise en place de l'emplacement de l'aperçu image
-        document.querySelector(".apercu").style.display = "block";
-        document.querySelector(".import-image").style.display = "none";
+         // on enregistre les information de l'image téléchargée
+        let image = document.getElementById("image").files;
 
-        // création de la balise image pour l'aperçu et ratachement à la balise aperçu
-        const apercuImage = document.createElement("img");
-        const apercuCadre = document.querySelector(".apercu");
-        apercuCadre.appendChild(apercuImage);
-        
-        // utilisation du constructeur FileReader()
-        let lecteurImage = new FileReader();
+        // s'il y a bien une image de téléchargée 
+        if (image.length > 0) {
+            // mise en place de l'emplacement de l'aperçu image
+            document.querySelector(".apercu").style.display = "block";
+            document.querySelector(".import-image").style.display = "none";
 
-        //ajout d'un listener en cas de téléchargement image pour l'attribution de la source de l'image 
-        lecteurImage.addEventListener("load", function() {
-            apercuImage.src = lecteurImage.result;
-        }, false);
-        //lecture de l'url de l'image
-        lecteurImage.readAsDataURL(image[0]);
-    }
+            // création de la balise image pour l'aperçu et ratachement à la balise aperçu
+            const apercuImage = document.createElement("img");
+            const apercuCadre = document.querySelector(".apercu");
+            apercuCadre.appendChild(apercuImage);
+            
+            // utilisation du constructeur FileReader()
+            let lecteurImage = new FileReader();
+
+            //ajout d'un listener en cas de téléchargement image pour l'attribution de la source de l'image 
+            lecteurImage.addEventListener("load", function() {
+                apercuImage.src = lecteurImage.result;
+            }, false);
+            //lecture de l'url de l'image
+            lecteurImage.readAsDataURL(image[0]);
+        }
+    })
+
+    
 };
 
 function fermetureApercu() {
@@ -344,4 +348,7 @@ if (storedToken !== null) {
     
     // si on sélectionne une image pour le formulaire on a un apercu de l'image qui s'affiche au niveau de la fiv apercu et la div ajout-image est désactivé
         montrerApercu();
-}
+    
+        ajoutPhoto();
+
+}  
