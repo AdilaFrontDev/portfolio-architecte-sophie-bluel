@@ -216,6 +216,11 @@ nav li {
 	margin: 0;
 }
 
+.categories div {
+	display: flex;
+	gap: 10px;
+}
+
 .categories p {
 	display: block;
 	border: 1px solid #1D6154;
