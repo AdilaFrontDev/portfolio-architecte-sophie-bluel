@@ -32,7 +32,7 @@ const galleireModaleImage = document.querySelector(".modale_galerie_images");
 function modaleGalleryGenerator(works) {
     // initialisation de la variavle;
     let gallerieModale = "";
-    for(let i =  0; i < works.length; i++) {
+    for (let i =  0; i < works.length; i++) {
         gallerieModale += `
         <figure class="miniature figure-${works[i].id}">
             <img src=${works[i].imageUrl}  alt=${works[i].title}>
@@ -51,6 +51,16 @@ worksGenerator(works);
 
 // récupération de la liste des catégories à partir du backend
 let categories = await getAllCategories();
+console.log(categories)
+
+let filtresCategorie = "";
+categories.forEach(element => {
+    filtresCategorie += `<p class="categorie" name="${element.name}">${element.name}</p>`; 
+}); 
+
+document.querySelector(".filtres").innerHTML = filtresCategorie;
+
+
 // extraction des id et des noms de catégorie
 let nomsCategories = categories.map(categorie => categorie.name);
 let indicesCategories = categories.map(categorie => categorie.id);
@@ -62,16 +72,16 @@ for (let i = 0; i < filtres.length; i++) {
     // on recupère l'attribut name de l'élément html de la catégorie concernée, 
     // ATTENTION le name de l'élément HTML doit être rigoureusement identique à celui utilisé dans le backend pour la même catégorie
     const categorieFiltre = filtres[i].getAttribute("name");
-    
+    console.log(categorieFiltre);
     // on récupère l'élément html de la catégorie concernée
     const categorieSort = filtres[i];
-
+    console.log(categorieSort);
     //stockage de d'indice de la catéorie cocnernée
     const indiceCategorie = nomsCategories.indexOf(categorieFiltre);
 
     // puis on récupère l'ID associé
     const categoryId = indicesCategories[indiceCategorie];
-
+    console.log(categoryId);
     //on ajout un listerner à la catégorie concernée
     categorieSort.addEventListener("click", function () {
         const categorieSorted = works.filter(function(work) {
@@ -119,9 +129,8 @@ function modeConnecte() {
         document.querySelector(".modale").style.display = "flex";
         
         // Décalage du reste des balises pour laisser la place au modale
-        //récupérations dans le DOM des balises à décaler
+        // récupérations dans le DOM des balises à décaler
         const header =document.querySelector("header");
-        
         header.classList.add("shift");
         
         // Ajout des boutons de modification pour l'introduction et pour la partie protfolio
@@ -130,7 +139,6 @@ function modeConnecte() {
             const mesProjets = document.querySelector(".projets");
         
             // Construction des balises à ajouter
-            
             const pModifier1 = document.createElement("p");
             const pModifier2 = document.createElement("p");
             pModifier1.classList.add("modifier");
@@ -162,6 +170,7 @@ function modeNonConnecte () {
     });
 }
 
+// fonction à exectuter quand on publi les changements
 function publierChangements(tableauIdProjetsASupprimer) {
     // Récupération dans le DOM de l'élément publier les changements
     const publierChangement = document.querySelector(".publier");
@@ -171,8 +180,6 @@ function publierChangements(tableauIdProjetsASupprimer) {
         for (const indice of tableauIdProjetsASupprimer) {
             deleteWorkAPI(indice);
         }
-        // ajout des photos via l'API ( a compléter)
-
         // suppression du token dans le local storage
         window.localStorage.removeItem("token");
         // Rétablissement des catégories de filtre
@@ -189,7 +196,7 @@ function fermetureModale() {
     document.querySelector(".modale_image").style.display = "none";
 }
 
-// fonction montre l'aperçu dde l'image selectionnée dans le formulaire d'ajout d'image
+// fonction a executer pour montrer l'aperçu de l'image selectionnée dans le formulaire d'ajout d'image
 function montrerApercu() {
     // on récupère du DOM l'élément HTML input file
     const imageInput = document.querySelector("#image");
@@ -204,15 +211,12 @@ function montrerApercu() {
             // mise en place de l'emplacement de l'aperçu image
             document.querySelector(".apercu").style.display = "block";
             document.querySelector(".import-image").style.display = "none";
-
             // création de la balise image pour l'aperçu et ratachement à la balise aperçu
             const apercuImage = document.createElement("img");
             const apercuCadre = document.querySelector(".apercu");
             apercuCadre.appendChild(apercuImage);
-            
             // utilisation du constructeur FileReader()
             let lecteurImage = new FileReader();
-
             //ajout d'un listener en cas de téléchargement image pour l'attribution de la source de l'image 
             lecteurImage.addEventListener("load", function() {
                 apercuImage.src = lecteurImage.result;
@@ -227,13 +231,12 @@ function fermetureApercu() {
     // suppression du contenu de la balise aperçu
     const apercu = document.querySelector(".apercu");
     apercu.innerHTML = "";
-
     // restauration de la partie import image
     document.querySelector(".apercu").style.display = "none";
     document.querySelector(".import-image").style.display = "flex";
-}
+};
 
-
+// Section du code permettant de rendre accessible le bouton d'envoie du formulaire d'ajout d'image uniquement quand tous les champs sont renseignés
     //récupération dans le DOM des champs requis pour le formulaire d'ajout de photo et du bouton d'envoie
     let boutonEnvoie = document.querySelector("#photo-ajout");
     boutonEnvoie.disabled = true;
@@ -245,13 +248,12 @@ function fermetureApercu() {
         let title = document.getElementById("titre").value;
         let image = document.getElementById("image").files[0];
         let categoriePhoto = document.getElementById("categorie").value;
-
         if (title.length > 0 && image.size > 0 && categoriePhoto.length > 0) {
             boutonEnvoie.disabled = false;
         }
     });
     
-// vérification du token dans le local storage
+// récupération du token dans le local storage
 let storedToken = window.localStorage.getItem("token");
 
 // en cas de connexion reussite 
@@ -262,8 +264,6 @@ if (storedToken !== null) {
 
     // en cas de déconnexion
     modeNonConnecte ();
-
-    // si le delai de connection est dépassé on supprime le token et on revien sur la page d'accueil standard (facultatif)
 
     // si on clique sur le bouton modifier de la partie portfolio
         // récupéraion dans le DOM du bouton modifier-gallerie
@@ -278,38 +278,22 @@ if (storedToken !== null) {
         modaleGalleryGenerator(works);
 
     // si on clique a l'exterieur de la fenêtre modale ou sur la croix elle doit se ferner et le darken backgroud desactivé
-        // récupération dans le DOM du bouton de fermeture de la fenetre modale
+        //on récupère dans le DOM tous les élements qui, au click, donne lieu à la fermeture de la modale
+        let elementsFermetureModale = [];
         const femetureModale = document.querySelector(".fa-xmark");
-        // ajout d'un listener au bouton de fermeture de la fenetre modale
-        femetureModale.addEventListener("click", function() {
-            fermetureModale();
-            fermetureApercu();
-            document.getElementById("formulaire-ajout-image").reset();
-        })
-
-        // idem si on clique à l'exterieur de la fenetre modale
         const darkenBackground = document.querySelector(".darker-background");
-        darkenBackground.addEventListener("click", function() {
-            fermetureModale();
-            fermetureApercu();
-            document.getElementById("formulaire-ajout-image").reset();
-        })
-
-        // idem si on clique sur la bare modale
         const bareModale = document.querySelector(".modale");
-        bareModale.addEventListener("click", function() {
-            fermetureModale();
-            fermetureApercu();
-            document.getElementById("formulaire-ajout-image").reset();
-        });
-
-        //idem si on ferme la seconde fenetre modale
         const femetureModale2 = document.querySelector("#fa-xmark");
-        femetureModale2.addEventListener("click", function() {
-            fermetureModale();
-            fermetureApercu();
-            document.getElementById("formulaire-ajout-image").reset();
-        });
+        elementsFermetureModale.push(femetureModale, darkenBackground, bareModale, femetureModale2);
+        //on ajoute pour chacun des éléments un listener permetant la fermeture de la modale
+        for (const element of elementsFermetureModale) {
+            // ajout d'un listener à l'élement html 
+            element.addEventListener("click", function() {
+                fermetureModale();
+                fermetureApercu();
+                document.getElementById("formulaire-ajout-image").reset();
+            });
+        }
 
     // si on clique sur ajouter image on doit desactiver la première fenetre modale et activier la deuxieme
         // récopération dans le DOM du bouton ajouter image
@@ -341,7 +325,6 @@ if (storedToken !== null) {
             //on rend les icones corbeille clickable pour chacun des projets dans la fenêtre modale
             supprime.forEach((trashCan) => {
                 trashCan.addEventListener("click", (e) => {
-                    
                     e.preventDefault();
                     // on sélectionne du projet dans la liste works et on le supprimer, l'id du bouton supprimé étant le même que celui du projet à supprimer   
                     let indice = e.target.id;
@@ -349,20 +332,18 @@ if (storedToken !== null) {
                     const sectionWorks = document.getElementsByClassName(`figure-${indice}`);
                     sectionWorks[1].remove();
                     sectionWorks[0].remove();
-
                     // récupération du projet concerné dans la liste des projets
                     const indicesProjets = works.map(work => work.id);
                     const indiceProjetASupprimer = indicesProjets.indexOf(parseInt(indice));
                     works.splice(indiceProjetASupprimer,1);
                     console.log(works);
-                   
                     // récupération de l'Id du projet à supprimer quand les changements seront enregistré
                     idProjetASupprimer.push(indice,1);
-                
                 })
             });
          
         ajoutPhoto();
+        // si on click sur publier changement les supressions de projets et ajouts d'image deviennent effectif aau niveau du backend via les requêtes HTTP
         publierChangements(idProjetASupprimer);
 }  
 

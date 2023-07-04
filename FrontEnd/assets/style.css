@@ -626,7 +626,7 @@ footer nav li {
 	margin: 20px 0 10px 8px;
 
 }
-.modale_image input[type="button"] {
+.modale_image input[type="submit"] {
 	font-family: 'Syne';
 	font-weight: 700;
 	font-size: 14px;
@@ -641,6 +641,6 @@ footer nav li {
 	cursor: pointer;
 }
 
-.modale_image input[type="button"]:disabled {
+.modale_image input[type="submit"]:disabled {
 	background-color: #A7A7A7;
 }
