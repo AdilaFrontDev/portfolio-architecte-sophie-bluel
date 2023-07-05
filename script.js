@@ -51,15 +51,12 @@ worksGenerator(works);
 
 // récupération de la liste des catégories à partir du backend
 let categories = await getAllCategories();
-console.log(categories)
-
 let filtresCategorie = "";
+// création du contenu html des fitres de catégorie
 categories.forEach(element => {
     filtresCategorie += `<p class="categorie" name="${element.name}">${element.name}</p>`; 
 }); 
-
 document.querySelector(".filtres").innerHTML = filtresCategorie;
-
 
 // extraction des id et des noms de catégorie
 let nomsCategories = categories.map(categorie => categorie.name);
@@ -72,27 +69,24 @@ for (let i = 0; i < filtres.length; i++) {
     // on recupère l'attribut name de l'élément html de la catégorie concernée, 
     // ATTENTION le name de l'élément HTML doit être rigoureusement identique à celui utilisé dans le backend pour la même catégorie
     const categorieFiltre = filtres[i].getAttribute("name");
-    console.log(categorieFiltre);
     // on récupère l'élément html de la catégorie concernée
     const categorieSort = filtres[i];
-    console.log(categorieSort);
     //stockage de d'indice de la catéorie cocnernée
     const indiceCategorie = nomsCategories.indexOf(categorieFiltre);
 
     // puis on récupère l'ID associé
     const categoryId = indicesCategories[indiceCategorie];
-    console.log(categoryId);
     //on ajout un listerner à la catégorie concernée
     categorieSort.addEventListener("click", function () {
         const categorieSorted = works.filter(function(work) {
             const categorie = work.category;
             // on utilise cet ID pour sélectionner les travaux qui nous intéresse
             return categorie.id == categoryId;
-        })
+        });
         // Effacement de l'écran et regénération de la page avec les projets filtrées uniquement
         sectionWorks.innerHTML= "";
         worksGenerator(categorieSorted);
-    })
+    });
 };
 
 // Récupération des éléments du DOM pour les boutons catégories
@@ -103,7 +97,6 @@ tousSort.addEventListener("click", function () {
     sectionWorks.innerHTML= "";
     worksGenerator(works);
 });
-
 
 // fonctions à executer en cas de connexion réussite
 function modeConnecte() {
@@ -137,22 +130,21 @@ function modeConnecte() {
             // Récupération des éléments du DOM dans lesquels seront ajouté les boutons de modification
             const introduction = document.querySelector(".introduction_figure");
             const mesProjets = document.querySelector(".projets");
-        
             // Construction des balises à ajouter
             const pModifier1 = document.createElement("p");
             const pModifier2 = document.createElement("p");
             pModifier1.classList.add("modifier");
             pModifier2.classList.add("modifier-gallerie");
             pModifier2.classList.add("modifier")
-        
+            // création du contenu html
             pModifier1.innerHTML = `<i class="fa-regular fa-pen-to-square"></i> modifier`;
             pModifier2.innerHTML = `<i class="fa-regular fa-pen-to-square"></i> modifier`;
-        
+            // rattachement aux éléments html correspondants
             introduction.appendChild(pModifier1);
             mesProjets.appendChild(pModifier2); 
-            
-            // Mise en silence des catégories
-            document.querySelector(".categories").style.display = "none";
+
+        // Mise en silence des catégories
+        document.querySelector(".categories").style.display = "none";
 }
 
 // fonction à executer en cas déconnexion
@@ -342,9 +334,9 @@ if (storedToken !== null) {
                 })
             });
          
-        ajoutPhoto();
         // si on click sur publier changement les supressions de projets et ajouts d'image deviennent effectif aau niveau du backend via les requêtes HTTP
         publierChangements(idProjetASupprimer);
 }  
 
+        ajoutPhoto();
 

@@ -41,14 +41,20 @@ export async function deleteWorkAPI(workId) {
         console.error(error);
     }
 }; 
-   
+
 export async function ajoutPhoto() {
    // Récupération dans le DOM du bouton d'envoie du formulaire d'ajout de photo et du boputon d'envoie du formulaire
     const photoSubmit = document.forms.namedItem("formulaire-ajout-image");
  
     // Ajout d'un listener au bouton de submission du formulaire d'ajout de photo
     photoSubmit.addEventListener("submit", async (e) => {
-        e.preventDefault();    
+        
+        // on vérifie la possibilité d'utiliser un preventDefault()
+        console.log(e.cancelable);
+        // on utilise les méthode permattant d'empécher le rafraichissement de la page web
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();    
         // récupération des éléments qui constituront le body de la requête POST
             //stockage du titre   
             const title = document.getElementById("titre").value;
@@ -102,10 +108,10 @@ export async function ajoutPhoto() {
                 alert(response.status);
                 throw new Error(response.status);
             }
-            return false;
         } catch (error) {
             console.error(error);
         }
+        return false;
     });    
-    
+    return false;
 };

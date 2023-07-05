@@ -206,7 +206,6 @@ nav li {
 	padding: 5px 0;
 }
 
-
 /* mise em page des catégories pour la section projets */
 
 .categories {
@@ -317,8 +316,6 @@ input[type="submit"]{
 	font-weight: 600;
 }
 
-
-
 /* fin section contact et login*/
 
 footer {
@@ -326,8 +323,8 @@ footer {
 	position: absolute;
 	left: 0;
 	right: 0;
-
 }
+
 footer nav ul {
 	display: flex;
 	justify-content: flex-end;
@@ -336,7 +333,6 @@ footer nav ul {
 
 footer nav li {
 	margin: 0 107px;
-	
 }
 
 /* partie de la modale */
