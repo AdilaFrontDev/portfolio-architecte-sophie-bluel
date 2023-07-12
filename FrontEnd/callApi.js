@@ -111,7 +111,5 @@ export async function ajoutPhoto() {
         } catch (error) {
             console.error(error);
         }
-        return false;
     });    
-    return false;
 };
