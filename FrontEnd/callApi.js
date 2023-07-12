@@ -42,45 +42,9 @@ export async function deleteWorkAPI(workId) {
     }
 }; 
 
-export async function ajoutPhoto() {
-   // Récupération dans le DOM du bouton d'envoie du formulaire d'ajout de photo et du boputon d'envoie du formulaire
-    const photoSubmit = document.forms.namedItem("formulaire-ajout-image");
- 
-    // Ajout d'un listener au bouton de submission du formulaire d'ajout de photo
-    photoSubmit.addEventListener("submit", async (e) => {
-        
-        // on vérifie la possibilité d'utiliser un preventDefault()
-        console.log(e.cancelable);
-        // on utilise les méthode permattant d'empécher le rafraichissement de la page web
-        e.preventDefault();
-        e.stopPropagation();
-        e.stopImmediatePropagation();    
-        // récupération des éléments qui constituront le body de la requête POST
-            //stockage du titre   
-            const title = document.getElementById("titre").value;
-            // récupération dans le DOM du file imput
-            const selectedFile = document.getElementById("image").files[0];
-            let imageName = selectedFile.name;
-            imageName = imageName.slice(0,-4);
-            //stockage de l'URL
-            const imageUrl = `http://localhost:5678/images/${imageName}${selectedFile.lastModified}.png`;
-            // récupération de la liste des catégories à partir du backend
-            let categories = await getAllCategories();
-            let nomsCategories = categories.map(categorie => categorie.name);
-            let indicesCategories = categories.map(categorie => categorie.id);
-            // recherche de l'indice de la catéogie concernée par la photo
-            let categoriePhoto = document.getElementById("categorie").value;
-            let indiceCategorie = nomsCategories.indexOf(categoriePhoto);
-            //stockage de d'indice de la catéorie
-            const categoryId = indicesCategories[indiceCategorie];
-            // utilisation de la méthode FormData() pour constituer le body
-            let formData = new FormData(photoSubmit);
-            // On intègre les donnée fu formulaire au formData
-            formData.append("title", title);
-            formData.append("image", imageUrl);
-            formData.append("category", categoryId);
+export async function ajoutPhoto(formDatas) {
 
-        // récupérations des autres éléments constitutifs des options de la requête
+       // récupérations des autres éléments constitutifs des options de la requête
         let storedToken = window.localStorage.getItem("token");
         let bearer = "Bearer " + storedToken;
         let httpOptions = "";
@@ -94,16 +58,17 @@ export async function ajoutPhoto() {
             httpOptions = {
                 method: "POST",
                 headers: headers,
-                body: formData
+                body: formDatas
             };
             console.log(httpOptions);
         }
-        try {   
+        try {
             const response = await fetch("http://localhost:5678/api/works", httpOptions);
             console.log(response.status);
             
             if (response.status === 201) {
                 alert('image correctement ajoutée');
+            
             } else {
                 alert(response.status);
                 throw new Error(response.status);
@@ -111,5 +76,5 @@ export async function ajoutPhoto() {
         } catch (error) {
             console.error(error);
         }
-    });    
-};
+        return false;
+}

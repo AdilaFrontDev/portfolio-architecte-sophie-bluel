@@ -285,11 +285,11 @@ function fermetureApercu() {
             montrerApercu();
     };
 
-// on récupéère dans le DOM l'ensemble des éléments html icone poubelle
-    let supprime = document.getElementsByClassName("fa-trash-can");
-    console.log(supprime)
+
 // section permettant la suppression de travaux à partir de la modale
     function deleteWork() {
+        // on récupéère dans le DOM l'ensemble des éléments html icone poubelle
+            let supprime = document.getElementsByClassName("fa-trash-can");
         //on rend les icones corbeille clickable pour chacun des projets dans la fenêtre modale
             for (let i = 0; i < supprime.length; i++) {
                 const trashCan = supprime[i];
